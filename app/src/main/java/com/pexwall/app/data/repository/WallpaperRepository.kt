@@ -25,32 +25,22 @@ class WallpaperRepository @Inject constructor(
     suspend fun getLatestWallpaper(): WallpaperEntity? = dao.getLatestWallpaper()
 
     suspend fun fetchWallpapers(query: String, page: Int = 1, orientation: String = "portrait"): List<PexelsPhoto> {
-        return try {
-            val response = api.searchPhotos(
-                query = "$query desktop wallpaper 4k",
-                orientation = if (orientation == "any") null else orientation,
-                size = "large",
-                perPage = Constants.DEFAULT_PER_PAGE,
-                page = page
-            )
-            response.photos
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        val response = api.searchPhotos(
+            query = "$query desktop wallpaper 4k",
+            orientation = if (orientation == "any") null else orientation,
+            size = "large",
+            perPage = Constants.DEFAULT_PER_PAGE,
+            page = page
+        )
+        return response.photos
     }
 
     suspend fun fetchCuratedWallpapers(page: Int = 1): List<PexelsPhoto> {
-        return try {
-            val response = api.getCuratedPhotos(
-                perPage = Constants.DEFAULT_PER_PAGE,
-                page = page
-            )
-            response.photos
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        val response = api.getCuratedPhotos(
+            perPage = Constants.DEFAULT_PER_PAGE,
+            page = page
+        )
+        return response.photos
     }
 
     suspend fun getNextWallpaper(
