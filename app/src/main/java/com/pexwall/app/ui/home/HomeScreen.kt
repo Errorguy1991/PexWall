@@ -150,7 +150,7 @@ fun HomeScreen(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
-            if (uiState.isChanging) {
+            if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     color = MaterialTheme.colorScheme.onPrimary,
@@ -167,7 +167,7 @@ fun HomeScreen(
 
         // Error Snackbar
         AnimatedVisibility(
-            visible = uiState.errorMessage != null,
+            visible = uiState.error != null,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier
@@ -181,7 +181,7 @@ fun HomeScreen(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = uiState.errorMessage ?: "",
+                    text = uiState.error ?: "",
                     modifier = Modifier.padding(16.dp),
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )

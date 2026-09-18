@@ -2,7 +2,6 @@ package com.pexwall.app.data.repository;
 
 import com.pexwall.app.data.api.PexelsApi;
 import com.pexwall.app.data.db.WallpaperDao;
-import com.pexwall.app.data.preferences.PreferencesManager;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
@@ -28,27 +27,23 @@ public final class WallpaperRepository_Factory implements Factory<WallpaperRepos
 
   private final Provider<WallpaperDao> daoProvider;
 
-  private final Provider<PreferencesManager> preferencesManagerProvider;
-
   public WallpaperRepository_Factory(Provider<PexelsApi> apiProvider,
-      Provider<WallpaperDao> daoProvider, Provider<PreferencesManager> preferencesManagerProvider) {
+      Provider<WallpaperDao> daoProvider) {
     this.apiProvider = apiProvider;
     this.daoProvider = daoProvider;
-    this.preferencesManagerProvider = preferencesManagerProvider;
   }
 
   @Override
   public WallpaperRepository get() {
-    return newInstance(apiProvider.get(), daoProvider.get(), preferencesManagerProvider.get());
+    return newInstance(apiProvider.get(), daoProvider.get());
   }
 
   public static WallpaperRepository_Factory create(Provider<PexelsApi> apiProvider,
-      Provider<WallpaperDao> daoProvider, Provider<PreferencesManager> preferencesManagerProvider) {
-    return new WallpaperRepository_Factory(apiProvider, daoProvider, preferencesManagerProvider);
+      Provider<WallpaperDao> daoProvider) {
+    return new WallpaperRepository_Factory(apiProvider, daoProvider);
   }
 
-  public static WallpaperRepository newInstance(PexelsApi api, WallpaperDao dao,
-      PreferencesManager preferencesManager) {
-    return new WallpaperRepository(api, dao, preferencesManager);
+  public static WallpaperRepository newInstance(PexelsApi api, WallpaperDao dao) {
+    return new WallpaperRepository(api, dao);
   }
 }

@@ -31,6 +31,7 @@ class PreferencesManager @Inject constructor(
         private val KEY_LOCK_BLUR_PERCENT = intPreferencesKey("lock_blur_percent")
         private val KEY_NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
         private val KEY_CURRENT_PAGE = intPreferencesKey("current_page")
+        private val KEY_HAS_SEEN_API_KEY_DIALOG = booleanPreferencesKey("has_seen_api_key_dialog")
     }
 
     val apiKey: Flow<String> = context.dataStore.data.map { prefs ->
@@ -84,7 +85,12 @@ class PreferencesManager @Inject constructor(
         prefs[KEY_CURRENT_PAGE] ?: 1
     }
 
+    val hasSeenApiKeyDialog: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[KEY_HAS_SEEN_API_KEY_DIALOG] ?: false
+    }
+
     suspend fun setApiKey(key: String) { context.dataStore.edit { it[KEY_API_KEY] = key } }
+    suspend fun setHasSeenApiKeyDialog(seen: Boolean) { context.dataStore.edit { it[KEY_HAS_SEEN_API_KEY_DIALOG] = seen } }
     suspend fun setFrequencyMinutes(minutes: Long) { context.dataStore.edit { it[KEY_FREQUENCY_MINUTES] = minutes } }
     suspend fun setWifiOnly(enabled: Boolean) { context.dataStore.edit { it[KEY_WIFI_ONLY] = enabled } }
     suspend fun setWallpaperMode(mode: WallpaperMode) { context.dataStore.edit { it[KEY_WALLPAPER_MODE] = mode.name } }

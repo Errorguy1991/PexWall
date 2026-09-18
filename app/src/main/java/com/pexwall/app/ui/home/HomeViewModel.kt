@@ -1,11 +1,13 @@
 package com.pexwall.app.ui.home
 
+import android.app.WallpaperManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pexwall.app.data.db.WallpaperEntity
 import com.pexwall.app.data.preferences.PreferencesManager
 import com.pexwall.app.data.repository.WallpaperRepository
 import com.pexwall.app.util.Constants
+import com.pexwall.app.util.WallpaperMode
 import com.pexwall.app.util.WallpaperSetter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -15,8 +17,7 @@ import javax.inject.Inject
 data class HomeUiState(
     val currentWallpaper: WallpaperEntity? = null,
     val isLoading: Boolean = false,
-    val isChanging: Boolean = false,
-    val errorMessage: String? = null
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -26,54 +27,69 @@ class HomeViewModel @Inject constructor(
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
+    private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            repository.getLatestWallpaperFlow().collect { wallpaper ->
-                _uiState.update { it.copy(currentWallpaper = wallpaper, isLoading = false) }
+            val latest = repository.getLatestWallpaper()
+            if (latest == null) {
+                changeWallpaperNow()
+            }
+            repository.getLatestWallpaperFlow().collectLatest { wallpaper ->
+                _uiState.update { it.copy(currentWallpaper = wallpaper) }
             }
         }
     }
 
     fun changeWallpaperNow() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isChanging = true, errorMessage = null) }
+            _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val photo = repository.getNextWallpaper()
-                if (photo != null) {
-                    val target = preferencesManager.wallpaperTarget.first()
-                    val success = wallpaperSetter.setWallpaper(photo.src.original, target)
-                    if (success) {
-                        val selectedCategories = preferencesManager.selectedCategories.first()
-                        val category = if (preferencesManager.randomMode.first()) {
-                            Constants.CATEGORIES.random().id
-                        } else {
-                            selectedCategories.firstOrNull() ?: "nature"
-                        }
-                        repository.saveToHistory(photo, category)
-                        repository.pruneOldHistory()
-                        _uiState.update { it.copy(isChanging = false) }
-                    } else {
-                        _uiState.update {
-                            it.copy(isChanging = false, errorMessage = "Failed to set wallpaper")
-                        }
+                val mode = preferencesManager.wallpaperMode.first()
+                val isRandom = preferencesManager.randomMode.first()
+                val orientation = preferencesManager.orientation.first()
+                val homeCategories = preferencesManager.homeCategories.first()
+                val lockCategories = preferencesManager.lockCategories.first()
+                val homeBlur = preferencesManager.homeBlurPercent.first()
+                val lockBlur = preferencesManager.lockBlurPercent.first()
+
+                var success = false
+
+                when (mode) {
+                    WallpaperMode.HOME_ONLY -> {
+                        val photo = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: throw Exception("No photo found")
+                        success = wallpaperSetter.setWallpaper(photo.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)
+                        val catId = if (isRandom) Constants.CATEGORIES.random().id else homeCategories.firstOrNull() ?: "nature"
+                        if (success) repository.saveToHistory(photo, catId)
                     }
-                } else {
-                    _uiState.update {
-                        it.copy(isChanging = false, errorMessage = "No wallpapers available")
+                    WallpaperMode.LOCK_ONLY -> {
+                        val photo = repository.getNextWallpaper(lockCategories, isRandom, orientation) ?: throw Exception("No photo found")
+                        success = wallpaperSetter.setWallpaper(photo.src.original, WallpaperManager.FLAG_LOCK, lockBlur)
+                        val catId = if (isRandom) Constants.CATEGORIES.random().id else lockCategories.firstOrNull() ?: "nature"
+                        if (success) repository.saveToHistory(photo, catId)
+                    }
+                    WallpaperMode.BOTH_SAME -> {
+                        val photo = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: throw Exception("No photo found")
+                        val successHome = wallpaperSetter.setWallpaper(photo.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)
+                        val successLock = wallpaperSetter.setWallpaper(photo.src.original, WallpaperManager.FLAG_LOCK, lockBlur)
+                        success = successHome || successLock
+                        val catId = if (isRandom) Constants.CATEGORIES.random().id else homeCategories.firstOrNull() ?: "nature"
+                        if (success) repository.saveToHistory(photo, catId)
                     }
                 }
+
+                if (!success) {
+                    _uiState.update { it.copy(error = "Failed to set wallpaper") }
+                }
+
+                repository.pruneOldHistory()
             } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(isChanging = false, errorMessage = e.message ?: "An error occurred")
-                }
+                e.printStackTrace()
+                _uiState.update { it.copy(error = e.localizedMessage ?: "An error occurred") }
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
-    }
-
-    fun clearError() {
-        _uiState.update { it.copy(errorMessage = null) }
     }
 }

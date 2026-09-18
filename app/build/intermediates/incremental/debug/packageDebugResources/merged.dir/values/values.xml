@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">About</string>
+    <string name="app_name">PexWall</string>
+    <string name="apply_wallpaper">Apply this wallpaper</string>
+    <string name="change_now">Change Now</string>
+    <string name="frequency">Change Frequency</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_history">History</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_settings">Settings</string>
+    <string name="no_history">No wallpaper history yet</string>
+    <string name="no_wallpaper">No wallpaper set yet. Tap "Change Now" to get started!</string>
+    <string name="on_pexels">on Pexels</string>
+    <string name="pexels_attribution">Powered by Pexels</string>
+    <string name="photo_by">Photo by %1$s</string>
+    <string name="random_category">Random</string>
+    <string name="select_categories">Select Categories</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="settings">Settings</string>
+    <string name="wallpaper_changed">Wallpaper Changed</string>
+    <string name="wallpaper_history">Wallpaper History</string>
+    <string name="wallpaper_notification_channel">Wallpaper Updates</string>
+    <string name="wallpaper_target">Set Wallpaper On</string>
+    <string name="wifi_only">WiFi Only Downloads</string>
+    <style name="Theme.PexWall" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

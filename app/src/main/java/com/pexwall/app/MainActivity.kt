@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pexwall.app.data.preferences.PreferencesManager
-import com.pexwall.app.ui.navigation.NavGraph
+import com.pexwall.app.ui.navigation.PexWallNavGraph
 import com.pexwall.app.ui.theme.PexWallTheme
 import com.pexwall.app.util.ApiKeyHolder
 import com.pexwall.app.util.Constants
@@ -34,31 +34,37 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val hasSeenDialog by preferencesManager.hasSeenApiKeyDialog.collectAsState(initial = false)
                     val apiKey by preferencesManager.apiKey.collectAsState(initial = "")
                     var showApiKeyDialog by remember { mutableStateOf(false) }
                     
-                    // Show dialog if API key is empty or is the default provided key
-                    LaunchedEffect(apiKey) {
-                        if (apiKey.isBlank() || apiKey == Constants.DEFAULT_API_KEY) {
-                            // Only show once per session if they dismiss it
+                    // Show dialog only if they haven't seen it yet
+                    LaunchedEffect(hasSeenDialog, apiKey) {
+                        if (!hasSeenDialog && (apiKey.isBlank() || apiKey == Constants.DEFAULT_API_KEY)) {
                             showApiKeyDialog = true
                         }
                     }
 
                     if (showApiKeyDialog) {
                         ApiKeyDialog(
-                            onDismiss = { showApiKeyDialog = false },
+                            onDismiss = {
+                                kotlinx.coroutines.MainScope().launch {
+                                    preferencesManager.setHasSeenApiKeyDialog(true)
+                                }
+                                showApiKeyDialog = false
+                            },
                             onSave = { newKey ->
                                 kotlinx.coroutines.MainScope().launch {
                                     ApiKeyHolder.apiKey = newKey
                                     preferencesManager.setApiKey(newKey)
+                                    preferencesManager.setHasSeenApiKeyDialog(true)
                                 }
                                 showApiKeyDialog = false
                             }
                         )
                     }
                     
-                    NavGraph()
+                    PexWallNavGraph()
                 }
             }
         }

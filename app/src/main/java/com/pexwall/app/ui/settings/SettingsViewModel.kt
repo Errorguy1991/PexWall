@@ -42,37 +42,40 @@ class SettingsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            combine(
-                preferencesManager.apiKey,
-                preferencesManager.frequencyMinutes,
-                preferencesManager.wifiOnly,
-                preferencesManager.wallpaperMode,
-                preferencesManager.autoChangeEnabled,
-                preferencesManager.homeCategories,
-                preferencesManager.lockCategories,
-                preferencesManager.randomMode,
-                preferencesManager.homeBlurPercent,
-                preferencesManager.lockBlurPercent,
-                preferencesManager.notificationsEnabled,
-                preferencesManager.orientation
-            ) { values ->
-                SettingsUiState(
-                    apiKey = values[0] as String,
-                    frequencyMinutes = values[1] as Long,
-                    wifiOnly = values[2] as Boolean,
-                    wallpaperMode = values[3] as WallpaperMode,
-                    autoChangeEnabled = values[4] as Boolean,
-                    homeCategories = values[5] as Set<String>,
-                    lockCategories = values[6] as Set<String>,
-                    randomMode = values[7] as Boolean,
-                    homeBlurPercent = values[8] as Int,
-                    lockBlurPercent = values[9] as Int,
-                    notificationsEnabled = values[10] as Boolean,
-                    orientation = values[11] as String
-                )
-            }.collect { state ->
-                _uiState.value = state
-            }
+            preferencesManager.apiKey.collect { val_ -> _uiState.update { it.copy(apiKey = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.frequencyMinutes.collect { val_ -> _uiState.update { it.copy(frequencyMinutes = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.wifiOnly.collect { val_ -> _uiState.update { it.copy(wifiOnly = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.wallpaperMode.collect { val_ -> _uiState.update { it.copy(wallpaperMode = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.autoChangeEnabled.collect { val_ -> _uiState.update { it.copy(autoChangeEnabled = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.homeCategories.collect { val_ -> _uiState.update { it.copy(homeCategories = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.lockCategories.collect { val_ -> _uiState.update { it.copy(lockCategories = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.randomMode.collect { val_ -> _uiState.update { it.copy(randomMode = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.homeBlurPercent.collect { val_ -> _uiState.update { it.copy(homeBlurPercent = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.lockBlurPercent.collect { val_ -> _uiState.update { it.copy(lockBlurPercent = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.notificationsEnabled.collect { val_ -> _uiState.update { it.copy(notificationsEnabled = val_) } }
+        }
+        viewModelScope.launch {
+            preferencesManager.orientation.collect { val_ -> _uiState.update { it.copy(orientation = val_) } }
         }
     }
 
