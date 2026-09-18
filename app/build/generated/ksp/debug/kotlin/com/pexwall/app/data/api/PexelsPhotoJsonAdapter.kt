@@ -13,6 +13,7 @@ import com.squareup.moshi.`internal`.Util
 import java.lang.NullPointerException
 import java.lang.reflect.Constructor
 import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.emptySet
@@ -29,6 +30,9 @@ public class PexelsPhotoJsonAdapter(
 
   private val stringAdapter: JsonAdapter<String> = moshi.adapter(String::class.java, emptySet(),
       "url")
+
+  private val longAdapter: JsonAdapter<Long> = moshi.adapter(Long::class.java, emptySet(),
+      "photographerId")
 
   private val nullableStringAdapter: JsonAdapter<String?> = moshi.adapter(String::class.java,
       emptySet(), "avgColor")
@@ -49,7 +53,7 @@ public class PexelsPhotoJsonAdapter(
     var url: String? = null
     var photographer: String? = null
     var photographerUrl: String? = null
-    var photographerId: Int? = null
+    var photographerId: Long? = null
     var avgColor: String? = null
     var src: PhotoSrc? = null
     var alt: String? = null
@@ -67,7 +71,7 @@ public class PexelsPhotoJsonAdapter(
             throw Util.unexpectedNull("photographer", "photographer", reader)
         5 -> photographerUrl = stringAdapter.fromJson(reader) ?:
             throw Util.unexpectedNull("photographerUrl", "photographer_url", reader)
-        6 -> photographerId = intAdapter.fromJson(reader) ?:
+        6 -> photographerId = longAdapter.fromJson(reader) ?:
             throw Util.unexpectedNull("photographerId", "photographer_id", reader)
         7 -> {
           avgColor = nullableStringAdapter.fromJson(reader)
@@ -112,7 +116,7 @@ public class PexelsPhotoJsonAdapter(
       val localConstructor: Constructor<PexelsPhoto> = this.constructorRef ?:
           PexelsPhoto::class.java.getDeclaredConstructor(Int::class.javaPrimitiveType,
           Int::class.javaPrimitiveType, Int::class.javaPrimitiveType, String::class.java,
-          String::class.java, String::class.java, Int::class.javaPrimitiveType, String::class.java,
+          String::class.java, String::class.java, Long::class.javaPrimitiveType, String::class.java,
           PhotoSrc::class.java, String::class.java, Int::class.javaPrimitiveType,
           Util.DEFAULT_CONSTRUCTOR_MARKER).also { this.constructorRef = it }
       return localConstructor.newInstance(
@@ -151,7 +155,7 @@ public class PexelsPhotoJsonAdapter(
     writer.name("photographer_url")
     stringAdapter.toJson(writer, value_.photographerUrl)
     writer.name("photographer_id")
-    intAdapter.toJson(writer, value_.photographerId)
+    longAdapter.toJson(writer, value_.photographerId)
     writer.name("avg_color")
     nullableStringAdapter.toJson(writer, value_.avgColor)
     writer.name("src")

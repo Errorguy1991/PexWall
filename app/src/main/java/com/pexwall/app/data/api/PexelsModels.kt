@@ -20,7 +20,7 @@ data class PexelsPhoto(
     val url: String,
     val photographer: String,
     @Json(name = "photographer_url") val photographerUrl: String,
-    @Json(name = "photographer_id") val photographerId: Int,
+    @Json(name = "photographer_id") val photographerId: Long,
     @Json(name = "avg_color") val avgColor: String? = null,
     val src: PhotoSrc,
     val alt: String? = null
