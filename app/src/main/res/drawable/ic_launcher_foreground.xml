@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Wallpaper/landscape icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,36h48v36H30z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0" />
+    <!-- Mountain shape -->
+    <path
+        android:fillColor="#8AB4F8"
+        android:pathData="M30,72L42,52L50,60L62,44L78,72z" />
+    <!-- Sun -->
+    <path
+        android:fillColor="#FDD835"
+        android:pathData="M65,45m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0" />
+</vector>

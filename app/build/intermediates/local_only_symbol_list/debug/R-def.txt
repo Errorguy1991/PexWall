@@ -1,0 +1,30 @@
+R_DEF: Internal format may change without notice
+local
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string about
+string app_name
+string apply_wallpaper
+string change_now
+string frequency
+string nav_categories
+string nav_history
+string nav_home
+string nav_settings
+string no_history
+string no_wallpaper
+string on_pexels
+string pexels_attribution
+string photo_by
+string random_category
+string select_categories
+string set_wallpaper
+string settings
+string wallpaper_changed
+string wallpaper_history
+string wallpaper_notification_channel
+string wallpaper_target
+string wifi_only
+style Theme.PexWall
