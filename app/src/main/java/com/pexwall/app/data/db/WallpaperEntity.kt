@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class WallpaperEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val pexelsPhotoId: Int,
+    val pexelsPhotoId: Long,
     val imageUrl: String,
     val thumbnailUrl: String,
     val photographer: String,

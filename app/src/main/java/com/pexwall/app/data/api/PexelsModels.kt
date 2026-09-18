@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class PexelsResponse(
-    @Json(name = "total_results") val totalResults: Int = 0,
+    @Json(name = "total_results") val totalResults: Long = 0,
     val page: Int = 0,
     @Json(name = "per_page") val perPage: Int = 0,
     val photos: List<PexelsPhoto> = emptyList(),
@@ -14,7 +14,7 @@ data class PexelsResponse(
 
 @JsonClass(generateAdapter = true)
 data class PexelsPhoto(
-    val id: Int,
+    val id: Long,
     val width: Int,
     val height: Int,
     val url: String,

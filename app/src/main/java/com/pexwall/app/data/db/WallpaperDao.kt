@@ -25,11 +25,11 @@ interface WallpaperDao {
     fun getLatestWallpaperFlow(): Flow<WallpaperEntity?>
 
     @Query("SELECT pexelsPhotoId FROM wallpaper_history")
-    suspend fun getAllUsedPhotoIds(): List<Int>
+    suspend fun getAllUsedPhotoIds(): List<Long>
 
     @Query("DELETE FROM wallpaper_history WHERE dateSet < :cutoffTime")
     suspend fun deleteOlderThan(cutoffTime: Long)
 
     @Query("SELECT COUNT(*) FROM wallpaper_history WHERE pexelsPhotoId = :photoId")
-    suspend fun isPhotoUsed(photoId: Int): Int
+    suspend fun isPhotoUsed(photoId: Long): Int
 }
