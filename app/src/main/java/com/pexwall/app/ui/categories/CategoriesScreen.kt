@@ -47,7 +47,7 @@ fun CategoriesScreen(
             TopAppBar(
                 title = { Text(titleText, fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.ui.graphics.Color.Transparent.copy(alpha = 0.8f)
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent
                 )
             )
         },
@@ -149,7 +149,7 @@ fun CategoriesScreen(
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
-                                            Text(category.displayName, style = MaterialTheme.typography.bodyLarge)
+                                            Text(category.displayName, style = MaterialTheme.typography.bodyLarge, color = Color.White)
                                             if (isSelected) {
                                                 Icon(
                                                     imageVector = Icons.Default.Check,

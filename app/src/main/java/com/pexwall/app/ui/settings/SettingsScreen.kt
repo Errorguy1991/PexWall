@@ -51,7 +51,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text("Settings", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.ui.graphics.Color.Transparent.copy(alpha = 0.8f)
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent
                 )
             )
         },
@@ -318,7 +318,7 @@ fun SettingsToggleItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(title, style = MaterialTheme.typography.bodyLarge, color = Color.White)
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
         Switch(
@@ -343,7 +343,7 @@ fun SettingsClickableItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(title, style = MaterialTheme.typography.bodyLarge, color = Color.White)
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
     }
@@ -360,7 +360,7 @@ fun SettingsSliderItem(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(title, style = MaterialTheme.typography.bodyLarge, color = Color.White)
             Text("%", style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
         Slider(
