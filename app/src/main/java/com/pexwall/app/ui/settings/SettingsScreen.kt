@@ -22,6 +22,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pexwall.app.util.Constants
 import com.pexwall.app.util.WallpaperMode
 import com.pexwall.app.util.WallpaperSource
+import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.HazeStyle
+import com.pexwall.app.ui.navigation.LocalHazeState
+import androidx.compose.foundation.border
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -271,8 +275,10 @@ fun SettingsGroup(content: @Composable ColumnScope.() -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .clip(RoundedCornerShape(24.dp))
+            .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(24.dp))
+            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+            .background(Color.White.copy(alpha=0.05f))
     ) {
         Column(content = content)
     }

@@ -51,6 +51,8 @@ sealed class Screen(
     data object Settings : Screen("settings", "Settings", Icons.Default.Settings)
 }
 
+val LocalHazeState = compositionLocalOf<HazeState> { error("No HazeState provided") }
+
 val bottomNavItems = listOf(
     Screen.Home,
     Screen.Categories,
@@ -68,15 +70,17 @@ fun PexWallNavGraph(homeViewModel: HomeViewModel = hiltViewModel()) {
     val homeUiState by homeViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.fillMaxSize().haze(state = hazeState)
-        ) {
-            composable(Screen.Home.route) { HomeScreen(viewModel = homeViewModel) }
-            composable(Screen.Categories.route) { CategoriesScreen() }
-            composable(Screen.History.route) { HistoryScreen() }
-            composable(Screen.Settings.route) { SettingsScreen() }
+        CompositionLocalProvider(LocalHazeState provides hazeState) {
+            NavHost(
+                navController = navController,
+                startDestination = Screen.Home.route,
+                modifier = Modifier.fillMaxSize().haze(state = hazeState)
+            ) {
+                composable(Screen.Home.route) { HomeScreen(viewModel = homeViewModel) }
+                composable(Screen.Categories.route) { CategoriesScreen() }
+                composable(Screen.History.route) { HistoryScreen() }
+                composable(Screen.Settings.route) { SettingsScreen() }
+            }
         }
 
         // iOS Style Floating Liquid Glass Bottom Island

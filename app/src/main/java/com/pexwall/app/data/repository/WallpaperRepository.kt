@@ -53,10 +53,11 @@ class WallpaperRepository @Inject constructor(
     suspend fun getNextWallpaper(
         selectedCategories: Set<String>,
         isRandom: Boolean,
-        orientation: String
+        orientation: String,
+        excludeIds: Set<Long> = emptySet()
     ): PexelsPhoto? {
         val source = prefs.wallpaperSource.first()
-        val usedIds = dao.getAllUsedPhotoIds().toSet()
+        val usedIds = dao.getAllUsedPhotoIds().toSet() + excludeIds
 
         if (source == WallpaperSource.BING) {
             return try {

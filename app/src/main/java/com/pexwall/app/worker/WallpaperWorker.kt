@@ -71,7 +71,7 @@ class WallpaperWorker @AssistedInject constructor(
                 }
                 WallpaperMode.SEPARATE_HOME_LOCK -> {
                     val photoHome = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: return Result.retry()
-                    val photoLock = repository.getNextWallpaper(lockCategories, isRandom, orientation) ?: return Result.retry()
+                    val photoLock = repository.getNextWallpaper(lockCategories, isRandom, orientation, setOf(photoHome.id)) ?: return Result.retry()
                     photographer = " & "
                     successHome = wallpaperSetter.setWallpaper(photoHome.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)
                     successLock = wallpaperSetter.setWallpaper(photoLock.src.original, WallpaperManager.FLAG_LOCK, lockBlur)

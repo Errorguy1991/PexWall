@@ -22,106 +22,110 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pexwall.app.data.db.WallpaperEntity
+import androidx.compose.foundation.border
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
+import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.HazeStyle
+import com.pexwall.app.ui.navigation.LocalHazeState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        // Header
-        Text(
-            text = "History",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
-        )
-        Text(
-            text = "Last 7 days of wallpapers",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Snackbar for messages
-        uiState.message?.let { message ->
-            LaunchedEffect(message) {
-                kotlinx.coroutines.delay(2000)
-                viewModel.clearMessage()
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text(
-                    text = message,
-                    modifier = Modifier.padding(12.dp),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
-        }
-
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (uiState.historyItems.isEmpty()) {
-            // Empty state
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    Icons.Default.ImageSearch,
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "No wallpaper history yet",
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(bottom = 16.dp)
-            ) {
-                uiState.historyItems.forEach { (date, wallpapers) ->
-                    item {
+    Scaffold(
+        containerColor = Color.Transparent,
+        topBar = {
+            TopAppBar(
+                title = { 
+                    Column {
+                        Text("History", fontWeight = FontWeight.Bold)
                         Text(
-                            text = date,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            text = "Last 7 days of wallpapers",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    items(wallpapers) { wallpaper ->
-                        HistoryItem(
-                            wallpaper = wallpaper,
-                            isApplying = uiState.applyingId == wallpaper.id,
-                            onClick = { viewModel.reapplyWallpaper(wallpaper) }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                )
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
+        ) {
+            // Snackbar for messages
+            uiState.message?.let { message ->
+                LaunchedEffect(message) {
+                    kotlinx.coroutines.delay(2000)
+                    viewModel.clearMessage()
+                }
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = message,
+                        modifier = Modifier.padding(12.dp),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
+
+            if (uiState.historyItems.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.ImageSearch,
+                            contentDescription = null,
+                            modifier = Modifier.size(64.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            "No history yet.\nWallpapers you set will appear here.",
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(bottom = 120.dp)
+                ) {
+                    uiState.historyItems.forEach { (dateHeader, wallpapers) ->
+                        item {
+                            Text(
+                                text = dateHeader,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                        }
+                        items(wallpapers, key = { it.id }) { wallpaper ->
+                            HistoryItem(
+                                wallpaper = wallpaper,
+                                onApply = { viewModel.reapplyWallpaper(wallpaper) }
+                            )
+                        }
                     }
                 }
             }
@@ -132,66 +136,55 @@ fun HistoryScreen(
 @Composable
 fun HistoryItem(
     wallpaper: WallpaperEntity,
-    isApplying: Boolean,
-    onClick: () -> Unit
+    onApply: () -> Unit
 ) {
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+            .background(Color.White.copy(alpha = 0.05f))
+            .clickable { onApply() }
+            .padding(12.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Thumbnail
+        Row(verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(wallpaper.thumbnailUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = "Wallpaper by ${wallpaper.photographer}",
+                contentDescription = "Wallpaper thumbnail",
                 modifier = Modifier
-                    .size(72.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
-            // Info
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = wallpaper.photographer,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Medium
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = wallpaper.category.replaceFirstChar { it.uppercase() },
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault())
-                        .format(java.util.Date(wallpaper.dateSet)),
-                    style = MaterialTheme.typography.bodySmall,
+                    text = java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault()).format(java.util.Date(wallpaper.dateSet)),
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
-            // Apply button
-            if (isApplying) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp
-                )
-            } else {
-                TextButton(onClick = onClick) {
-                    Text("Apply")
-                }
+            
+            TextButton(onClick = onApply) {
+                Text("Apply")
             }
         }
     }

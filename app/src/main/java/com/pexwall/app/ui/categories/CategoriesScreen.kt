@@ -18,6 +18,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pexwall.app.util.Category
 import com.pexwall.app.util.Constants
 import com.pexwall.app.util.WallpaperSource
+import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.HazeStyle
+import com.pexwall.app.ui.navigation.LocalHazeState
+import androidx.compose.foundation.border
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,8 +82,10 @@ fun CategoriesScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.surface)
+                            .clip(RoundedCornerShape(24.dp))
+                            .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(24.dp))
+                            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+                            .background(Color.White.copy(alpha=0.05f))
                     ) {
                         Row(
                             modifier = Modifier
@@ -123,8 +130,10 @@ fun CategoriesScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 16.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(MaterialTheme.colorScheme.surface)
+                                    .clip(RoundedCornerShape(24.dp))
+                                    .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(24.dp))
+                            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+                            .background(Color.White.copy(alpha=0.05f))
                             ) {
                                 Column {
                                     items.forEachIndexed { index, category ->
