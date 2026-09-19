@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.pexwall.app.util.WallpaperMode
+import com.pexwall.app.util.WallpaperSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,6 +33,7 @@ class PreferencesManager @Inject constructor(
         private val KEY_NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
         private val KEY_CURRENT_PAGE = intPreferencesKey("current_page")
         private val KEY_HAS_SEEN_API_KEY_DIALOG = booleanPreferencesKey("has_seen_api_key_dialog")
+        private val KEY_WALLPAPER_SOURCE = stringPreferencesKey("wallpaper_source")
     }
 
     val apiKey: Flow<String> = context.dataStore.data.map { prefs ->
@@ -89,6 +91,12 @@ class PreferencesManager @Inject constructor(
         prefs[KEY_HAS_SEEN_API_KEY_DIALOG] ?: false
     }
 
+    val wallpaperSource: Flow<WallpaperSource> = context.dataStore.data.map { prefs ->
+        val name = prefs[KEY_WALLPAPER_SOURCE] ?: WallpaperSource.PEXELS.name
+        try { WallpaperSource.valueOf(name) } catch (e: Exception) { WallpaperSource.PEXELS }
+    }
+
+    suspend fun setWallpaperSource(source: WallpaperSource) { context.dataStore.edit { it[KEY_WALLPAPER_SOURCE] = source.name } }
     suspend fun setApiKey(key: String) { context.dataStore.edit { it[KEY_API_KEY] = key } }
     suspend fun setHasSeenApiKeyDialog(seen: Boolean) { context.dataStore.edit { it[KEY_HAS_SEEN_API_KEY_DIALOG] = seen } }
     suspend fun setFrequencyMinutes(minutes: Long) { context.dataStore.edit { it[KEY_FREQUENCY_MINUTES] = minutes } }

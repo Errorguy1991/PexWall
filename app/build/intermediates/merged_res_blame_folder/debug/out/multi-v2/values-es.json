@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "com.pexwall.app-mergeDebugResources-67:/values-es/values-es.xml",
+            "outputFile": "com.pexwall.app-mergeDebugResources-68:/values-es/values-es.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\b4881dd5d957f69504eee9f9f23d3b30\\transformed\\ui-release\\res\\values-es\\values-es.xml",
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\66551e03f98b6b1fcf7f632ec6f0ede6\\transformed\\foundation-release\\res\\values-es\\values-es.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,155",
+                        "endColumns": "99,101",
+                        "endOffsets": "150,252"
+                    },
+                    "to": {
+                        "startLines": "83,84",
+                        "startColumns": "4,4",
+                        "startOffsets": "8722,8822",
+                        "endColumns": "99,101",
+                        "endOffsets": "8817,8919"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\05e6744547220774b257d5c9b079629c\\transformed\\ui-release\\res\\values-es\\values-es.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -52,23 +69,6 @@
                         "startOffsets": "105,204,306,406,504,611,717,8348",
                         "endColumns": "98,101,99,97,106,105,119,100",
                         "endOffsets": "199,301,401,499,606,712,832,8444"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\397655549f6febe3a06d241d75b2b749\\transformed\\foundation-release\\res\\values-es\\values-es.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,155",
-                        "endColumns": "99,101",
-                        "endOffsets": "150,252"
-                    },
-                    "to": {
-                        "startLines": "83,84",
-                        "startColumns": "4,4",
-                        "startOffsets": "8722,8822",
-                        "endColumns": "99,101",
-                        "endOffsets": "8817,8919"
                     }
                 }
             ]

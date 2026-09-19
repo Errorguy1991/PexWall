@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.pexwall.app-mergeDebugResources-67:/values-sl/values-sl.xml",
+            "outputFile": "com.pexwall.app-mergeDebugResources-68:/values-sl/values-sl.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\397655549f6febe3a06d241d75b2b749\\transformed\\foundation-release\\res\\values-sl\\values-sl.xml",
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\66551e03f98b6b1fcf7f632ec6f0ede6\\transformed\\foundation-release\\res\\values-sl\\values-sl.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\b4881dd5d957f69504eee9f9f23d3b30\\transformed\\ui-release\\res\\values-sl\\values-sl.xml",
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\05e6744547220774b257d5c9b079629c\\transformed\\ui-release\\res\\values-sl\\values-sl.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

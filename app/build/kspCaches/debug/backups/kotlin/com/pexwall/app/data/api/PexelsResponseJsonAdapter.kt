@@ -14,6 +14,7 @@ import com.squareup.moshi.`internal`.Util
 import java.lang.NullPointerException
 import java.lang.reflect.Constructor
 import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -27,8 +28,10 @@ public class PexelsResponseJsonAdapter(
   private val options: JsonReader.Options = JsonReader.Options.of("total_results", "page",
       "per_page", "photos", "next_page")
 
-  private val intAdapter: JsonAdapter<Int> = moshi.adapter(Int::class.java, emptySet(),
+  private val longAdapter: JsonAdapter<Long> = moshi.adapter(Long::class.java, emptySet(),
       "totalResults")
+
+  private val intAdapter: JsonAdapter<Int> = moshi.adapter(Int::class.java, emptySet(), "page")
 
   private val listOfPexelsPhotoAdapter: JsonAdapter<List<PexelsPhoto>> =
       moshi.adapter(Types.newParameterizedType(List::class.java, PexelsPhoto::class.java),
@@ -44,7 +47,7 @@ public class PexelsResponseJsonAdapter(
       append("GeneratedJsonAdapter(").append("PexelsResponse").append(')') }
 
   override fun fromJson(reader: JsonReader): PexelsResponse {
-    var totalResults: Int? = 0
+    var totalResults: Long? = 0L
     var page: Int? = 0
     var perPage: Int? = 0
     var photos: List<PexelsPhoto>? = null
@@ -54,7 +57,7 @@ public class PexelsResponseJsonAdapter(
     while (reader.hasNext()) {
       when (reader.selectName(options)) {
         0 -> {
-          totalResults = intAdapter.fromJson(reader) ?: throw Util.unexpectedNull("totalResults",
+          totalResults = longAdapter.fromJson(reader) ?: throw Util.unexpectedNull("totalResults",
               "total_results", reader)
           // $mask = $mask and (1 shl 0).inv()
           mask0 = mask0 and 0xfffffffe.toInt()
@@ -92,7 +95,7 @@ public class PexelsResponseJsonAdapter(
     if (mask0 == 0xffffffe0.toInt()) {
       // All parameters with defaults are set, invoke the constructor directly
       return  PexelsResponse(
-          totalResults = totalResults as Int,
+          totalResults = totalResults as Long,
           page = page as Int,
           perPage = perPage as Int,
           photos = photos as List<PexelsPhoto>,
@@ -102,7 +105,7 @@ public class PexelsResponseJsonAdapter(
       // Reflectively invoke the synthetic defaults constructor
       @Suppress("UNCHECKED_CAST")
       val localConstructor: Constructor<PexelsResponse> = this.constructorRef ?:
-          PexelsResponse::class.java.getDeclaredConstructor(Int::class.javaPrimitiveType,
+          PexelsResponse::class.java.getDeclaredConstructor(Long::class.javaPrimitiveType,
           Int::class.javaPrimitiveType, Int::class.javaPrimitiveType, List::class.java,
           String::class.java, Int::class.javaPrimitiveType, Util.DEFAULT_CONSTRUCTOR_MARKER).also {
           this.constructorRef = it }
@@ -124,7 +127,7 @@ public class PexelsResponseJsonAdapter(
     }
     writer.beginObject()
     writer.name("total_results")
-    intAdapter.toJson(writer, value_.totalResults)
+    longAdapter.toJson(writer, value_.totalResults)
     writer.name("page")
     intAdapter.toJson(writer, value_.page)
     writer.name("per_page")

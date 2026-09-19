@@ -69,6 +69,17 @@ class WallpaperWorker @AssistedInject constructor(
                     val catId = if (isRandom) Constants.CATEGORIES.random().id else lockCategories.firstOrNull() ?: "nature"
                     if (successLock) repository.saveToHistory(photo, catId)
                 }
+                WallpaperMode.SEPARATE_HOME_LOCK -> {
+                    val photoHome = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: return Result.retry()
+                    val photoLock = repository.getNextWallpaper(lockCategories, isRandom, orientation) ?: return Result.retry()
+                    photographer = " & "
+                    successHome = wallpaperSetter.setWallpaper(photoHome.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)
+                    successLock = wallpaperSetter.setWallpaper(photoLock.src.original, WallpaperManager.FLAG_LOCK, lockBlur)
+                    val catIdHome = if (isRandom) Constants.CATEGORIES.random().id else homeCategories.firstOrNull() ?: "nature"
+                    val catIdLock = if (isRandom) Constants.CATEGORIES.random().id else lockCategories.firstOrNull() ?: "nature"
+                    if (successHome) repository.saveToHistory(photoHome, catIdHome)
+                    if (successLock) repository.saveToHistory(photoLock, catIdLock)
+                }
                 WallpaperMode.BOTH_SAME -> {
                     // Use home categories as the primary source for "both same"
                     val photo = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: return Result.retry()

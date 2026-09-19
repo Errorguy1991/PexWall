@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "com.pexwall.app-mergeDebugResources-67:/values-zu/values-zu.xml",
+            "outputFile": "com.pexwall.app-mergeDebugResources-68:/values-zu/values-zu.xml",
             "map": [
-                {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\397655549f6febe3a06d241d75b2b749\\transformed\\foundation-release\\res\\values-zu\\values-zu.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,146",
-                        "endColumns": "90,91",
-                        "endOffsets": "141,233"
-                    },
-                    "to": {
-                        "startLines": "83,84",
-                        "startColumns": "4,4",
-                        "startOffsets": "8641,8732",
-                        "endColumns": "90,91",
-                        "endOffsets": "8727,8819"
-                    }
-                },
                 {
                     "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\e1b2ee99c9859ef10a1634cbf44c3814\\transformed\\core-1.12.0\\res\\values-zu\\values-zu.xml",
                     "from": {
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\b4881dd5d957f69504eee9f9f23d3b30\\transformed\\ui-release\\res\\values-zu\\values-zu.xml",
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\66551e03f98b6b1fcf7f632ec6f0ede6\\transformed\\foundation-release\\res\\values-zu\\values-zu.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,146",
+                        "endColumns": "90,91",
+                        "endOffsets": "141,233"
+                    },
+                    "to": {
+                        "startLines": "83,84",
+                        "startColumns": "4,4",
+                        "startOffsets": "8641,8732",
+                        "endColumns": "90,91",
+                        "endOffsets": "8727,8819"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\05e6744547220774b257d5c9b079629c\\transformed\\ui-release\\res\\values-zu\\values-zu.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

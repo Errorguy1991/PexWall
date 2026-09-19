@@ -26,13 +26,12 @@ public class PexelsPhotoJsonAdapter(
   private val options: JsonReader.Options = JsonReader.Options.of("id", "width", "height", "url",
       "photographer", "photographer_url", "photographer_id", "avg_color", "src", "alt")
 
-  private val intAdapter: JsonAdapter<Int> = moshi.adapter(Int::class.java, emptySet(), "id")
+  private val longAdapter: JsonAdapter<Long> = moshi.adapter(Long::class.java, emptySet(), "id")
+
+  private val intAdapter: JsonAdapter<Int> = moshi.adapter(Int::class.java, emptySet(), "width")
 
   private val stringAdapter: JsonAdapter<String> = moshi.adapter(String::class.java, emptySet(),
       "url")
-
-  private val longAdapter: JsonAdapter<Long> = moshi.adapter(Long::class.java, emptySet(),
-      "photographerId")
 
   private val nullableStringAdapter: JsonAdapter<String?> = moshi.adapter(String::class.java,
       emptySet(), "avgColor")
@@ -47,7 +46,7 @@ public class PexelsPhotoJsonAdapter(
       append("GeneratedJsonAdapter(").append("PexelsPhoto").append(')') }
 
   override fun fromJson(reader: JsonReader): PexelsPhoto {
-    var id: Int? = null
+    var id: Long? = null
     var width: Int? = null
     var height: Int? = null
     var url: String? = null
@@ -61,7 +60,7 @@ public class PexelsPhotoJsonAdapter(
     reader.beginObject()
     while (reader.hasNext()) {
       when (reader.selectName(options)) {
-        0 -> id = intAdapter.fromJson(reader) ?: throw Util.unexpectedNull("id", "id", reader)
+        0 -> id = longAdapter.fromJson(reader) ?: throw Util.unexpectedNull("id", "id", reader)
         1 -> width = intAdapter.fromJson(reader) ?: throw Util.unexpectedNull("width", "width",
             reader)
         2 -> height = intAdapter.fromJson(reader) ?: throw Util.unexpectedNull("height", "height",
@@ -114,7 +113,7 @@ public class PexelsPhotoJsonAdapter(
       // Reflectively invoke the synthetic defaults constructor
       @Suppress("UNCHECKED_CAST")
       val localConstructor: Constructor<PexelsPhoto> = this.constructorRef ?:
-          PexelsPhoto::class.java.getDeclaredConstructor(Int::class.javaPrimitiveType,
+          PexelsPhoto::class.java.getDeclaredConstructor(Long::class.javaPrimitiveType,
           Int::class.javaPrimitiveType, Int::class.javaPrimitiveType, String::class.java,
           String::class.java, String::class.java, Long::class.javaPrimitiveType, String::class.java,
           PhotoSrc::class.java, String::class.java, Int::class.javaPrimitiveType,
@@ -143,7 +142,7 @@ public class PexelsPhotoJsonAdapter(
     }
     writer.beginObject()
     writer.name("id")
-    intAdapter.toJson(writer, value_.id)
+    longAdapter.toJson(writer, value_.id)
     writer.name("width")
     intAdapter.toJson(writer, value_.width)
     writer.name("height")

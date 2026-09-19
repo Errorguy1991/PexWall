@@ -68,14 +68,22 @@ class WallpaperSetter @Inject constructor(
     private fun applyBlur(source: Bitmap, blurPercent: Int): Bitmap {
         if (blurPercent <= 0) return source
         val clamped = blurPercent.coerceIn(1, 100)
-        // Scale down proportionally: 100% blur → ~2% size, 1% blur → ~98% size
-        val scaleFactor = 1f - (clamped / 100f * 0.98f)
+        // Downscale first to make StackBlur faster
+        val scaleFactor = 0.25f // 1/4 resolution is plenty for a heavy blur
         val scaledW = maxOf(2, (source.width * scaleFactor).toInt())
         val scaledH = maxOf(2, (source.height * scaleFactor).toInt())
-
+        
         val small = Bitmap.createScaledBitmap(source, scaledW, scaledH, true)
-        val blurred = Bitmap.createScaledBitmap(small, source.width, source.height, true)
-        if (small != blurred) small.recycle()
-        return blurred
+        
+        // Convert blurPercent (1-100) to a StackBlur radius (1-50 approx)
+        val radius = maxOf(1, (clamped * 0.5f).toInt())
+        
+        val blurredSmall = StackBlur.process(small, radius)
+        val finalBitmap = Bitmap.createScaledBitmap(blurredSmall, source.width, source.height, true)
+        
+        if (small != blurredSmall && small != source) small.recycle()
+        if (blurredSmall != finalBitmap && blurredSmall != source) blurredSmall.recycle()
+        
+        return finalBitmap
     }
 }

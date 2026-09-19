@@ -69,6 +69,17 @@ class HomeViewModel @Inject constructor(
                         val catId = if (isRandom) Constants.CATEGORIES.random().id else lockCategories.firstOrNull() ?: "nature"
                         if (success) repository.saveToHistory(photo, catId)
                     }
+                    WallpaperMode.SEPARATE_HOME_LOCK -> {
+                        val photoHome = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: throw Exception("No home photo found")
+                        val photoLock = repository.getNextWallpaper(lockCategories, isRandom, orientation) ?: throw Exception("No lock photo found")
+                        val successHome = wallpaperSetter.setWallpaper(photoHome.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)
+                        val successLock = wallpaperSetter.setWallpaper(photoLock.src.original, WallpaperManager.FLAG_LOCK, lockBlur)
+                        success = successHome && successLock
+                        val catIdHome = if (isRandom) Constants.CATEGORIES.random().id else homeCategories.firstOrNull() ?: "nature"
+                        val catIdLock = if (isRandom) Constants.CATEGORIES.random().id else lockCategories.firstOrNull() ?: "nature"
+                        if (successHome) repository.saveToHistory(photoHome, catIdHome)
+                        if (successLock) repository.saveToHistory(photoLock, catIdLock)
+                    }
                     WallpaperMode.BOTH_SAME -> {
                         val photo = repository.getNextWallpaper(homeCategories, isRandom, orientation) ?: throw Exception("No photo found")
                         val successHome = wallpaperSetter.setWallpaper(photo.src.original, WallpaperManager.FLAG_SYSTEM, homeBlur)

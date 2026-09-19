@@ -21,6 +21,7 @@ data class SettingsUiState(
     val frequencyMinutes: Long = 1440L,
     val wifiOnly: Boolean = false,
     val wallpaperMode: WallpaperMode = WallpaperMode.BOTH_SAME,
+    val wallpaperSource: com.pexwall.app.util.WallpaperSource = com.pexwall.app.util.WallpaperSource.PEXELS,
     val autoChangeEnabled: Boolean = true,
     val homeCategories: Set<String> = setOf("nature"),
     val lockCategories: Set<String> = setOf("nature"),
@@ -99,6 +100,10 @@ class SettingsViewModel @Inject constructor(
             preferencesManager.setWifiOnly(enabled)
             rescheduleWork()
         }
+    }
+
+    fun setWallpaperSource(source: com.pexwall.app.util.WallpaperSource) {
+        viewModelScope.launch { preferencesManager.setWallpaperSource(source) }
     }
 
     fun setWallpaperMode(mode: WallpaperMode) {

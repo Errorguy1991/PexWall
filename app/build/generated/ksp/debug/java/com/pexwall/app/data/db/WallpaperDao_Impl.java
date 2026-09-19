@@ -15,6 +15,7 @@ import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Class;
 import java.lang.Exception;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -143,8 +144,8 @@ public final class WallpaperDao_Impl implements WallpaperDao {
             final WallpaperEntity _item;
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
-            final int _tmpPexelsPhotoId;
-            _tmpPexelsPhotoId = _cursor.getInt(_cursorIndexOfPexelsPhotoId);
+            final long _tmpPexelsPhotoId;
+            _tmpPexelsPhotoId = _cursor.getLong(_cursorIndexOfPexelsPhotoId);
             final String _tmpImageUrl;
             _tmpImageUrl = _cursor.getString(_cursorIndexOfImageUrl);
             final String _tmpThumbnailUrl;
@@ -205,8 +206,8 @@ public final class WallpaperDao_Impl implements WallpaperDao {
             final WallpaperEntity _item;
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
-            final int _tmpPexelsPhotoId;
-            _tmpPexelsPhotoId = _cursor.getInt(_cursorIndexOfPexelsPhotoId);
+            final long _tmpPexelsPhotoId;
+            _tmpPexelsPhotoId = _cursor.getLong(_cursorIndexOfPexelsPhotoId);
             final String _tmpImageUrl;
             _tmpImageUrl = _cursor.getString(_cursorIndexOfImageUrl);
             final String _tmpThumbnailUrl;
@@ -265,8 +266,8 @@ public final class WallpaperDao_Impl implements WallpaperDao {
           if (_cursor.moveToFirst()) {
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
-            final int _tmpPexelsPhotoId;
-            _tmpPexelsPhotoId = _cursor.getInt(_cursorIndexOfPexelsPhotoId);
+            final long _tmpPexelsPhotoId;
+            _tmpPexelsPhotoId = _cursor.getLong(_cursorIndexOfPexelsPhotoId);
             final String _tmpImageUrl;
             _tmpImageUrl = _cursor.getString(_cursorIndexOfImageUrl);
             final String _tmpThumbnailUrl;
@@ -321,8 +322,8 @@ public final class WallpaperDao_Impl implements WallpaperDao {
           if (_cursor.moveToFirst()) {
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
-            final int _tmpPexelsPhotoId;
-            _tmpPexelsPhotoId = _cursor.getInt(_cursorIndexOfPexelsPhotoId);
+            final long _tmpPexelsPhotoId;
+            _tmpPexelsPhotoId = _cursor.getLong(_cursorIndexOfPexelsPhotoId);
             final String _tmpImageUrl;
             _tmpImageUrl = _cursor.getString(_cursorIndexOfImageUrl);
             final String _tmpThumbnailUrl;
@@ -359,20 +360,20 @@ public final class WallpaperDao_Impl implements WallpaperDao {
   }
 
   @Override
-  public Object getAllUsedPhotoIds(final Continuation<? super List<Integer>> $completion) {
+  public Object getAllUsedPhotoIds(final Continuation<? super List<Long>> $completion) {
     final String _sql = "SELECT pexelsPhotoId FROM wallpaper_history";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
-    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<Integer>>() {
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<Long>>() {
       @Override
       @NonNull
-      public List<Integer> call() throws Exception {
+      public List<Long> call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-          final List<Integer> _result = new ArrayList<Integer>(_cursor.getCount());
+          final List<Long> _result = new ArrayList<Long>(_cursor.getCount());
           while (_cursor.moveToNext()) {
-            final Integer _item;
-            _item = _cursor.getInt(0);
+            final Long _item;
+            _item = _cursor.getLong(0);
             _result.add(_item);
           }
           return _result;
@@ -385,7 +386,7 @@ public final class WallpaperDao_Impl implements WallpaperDao {
   }
 
   @Override
-  public Object isPhotoUsed(final int photoId, final Continuation<? super Integer> $completion) {
+  public Object isPhotoUsed(final long photoId, final Continuation<? super Integer> $completion) {
     final String _sql = "SELECT COUNT(*) FROM wallpaper_history WHERE pexelsPhotoId = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;

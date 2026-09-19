@@ -14,7 +14,8 @@ import javax.inject.Inject
 data class CategoriesUiState(
     val homeCategories: Set<String> = setOf("nature"),
     val lockCategories: Set<String> = setOf("nature"),
-    val randomMode: Boolean = false
+    val randomMode: Boolean = false,
+    val wallpaperSource: com.pexwall.app.util.WallpaperSource = com.pexwall.app.util.WallpaperSource.PEXELS
 )
 
 @HiltViewModel
@@ -34,6 +35,11 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesManager.lockCategories.collectLatest { cats ->
                 _uiState.value = _uiState.value.copy(lockCategories = cats)
+            }
+        }
+        viewModelScope.launch {
+            preferencesManager.wallpaperSource.collectLatest { source ->
+                _uiState.value = _uiState.value.copy(wallpaperSource = source)
             }
         }
         viewModelScope.launch {

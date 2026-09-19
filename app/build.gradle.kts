@@ -64,6 +64,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.compose.animation:animation-core:1.6.7")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("dev.chrisbanes.haze:haze:0.6.2")
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.6")

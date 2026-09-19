@@ -54,7 +54,7 @@ class HistoryViewModel @Inject constructor(
                 val success = when (mode) {
                     WallpaperMode.HOME_ONLY -> wallpaperSetter.setWallpaper(wallpaper.imageUrl, WallpaperManager.FLAG_SYSTEM, homeBlur)
                     WallpaperMode.LOCK_ONLY -> wallpaperSetter.setWallpaper(wallpaper.imageUrl, WallpaperManager.FLAG_LOCK, lockBlur)
-                    WallpaperMode.BOTH_SAME -> {
+                    WallpaperMode.BOTH_SAME, WallpaperMode.SEPARATE_HOME_LOCK -> {
                         val h = wallpaperSetter.setWallpaper(wallpaper.imageUrl, WallpaperManager.FLAG_SYSTEM, homeBlur)
                         val l = wallpaperSetter.setWallpaper(wallpaper.imageUrl, WallpaperManager.FLAG_LOCK, lockBlur)
                         h || l

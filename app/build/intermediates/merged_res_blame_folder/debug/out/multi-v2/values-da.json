@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.pexwall.app-mergeDebugResources-67:/values-da/values-da.xml",
+            "outputFile": "com.pexwall.app-mergeDebugResources-68:/values-da/values-da.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\b4881dd5d957f69504eee9f9f23d3b30\\transformed\\ui-release\\res\\values-da\\values-da.xml",
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\05e6744547220774b257d5c9b079629c\\transformed\\ui-release\\res\\values-da\\values-da.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -18,6 +18,23 @@
                         "startOffsets": "832,924,1004,1099,1198,1280,1357,7479,7568,7650,7715,7780,7861,7945,8116,8194,8261",
                         "endColumns": "91,79,94,98,81,76,88,88,81,64,64,80,83,69,77,66,119",
                         "endOffsets": "919,999,1094,1193,1275,1352,1441,7563,7645,7710,7775,7856,7940,8010,8189,8256,8376"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\66551e03f98b6b1fcf7f632ec6f0ede6\\transformed\\foundation-release\\res\\values-da\\values-da.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,145",
+                        "endColumns": "89,86",
+                        "endOffsets": "140,227"
+                    },
+                    "to": {
+                        "startLines": "83,84",
+                        "startColumns": "4,4",
+                        "startOffsets": "8381,8471",
+                        "endColumns": "89,86",
+                        "endOffsets": "8466,8553"
                     }
                 },
                 {
@@ -52,23 +69,6 @@
                         "startOffsets": "1446,1562,1675,1782,1896,1996,2091,2203,2347,2469,2618,2702,2802,2891,2985,3099,3217,3322,3447,3567,3703,3876,4006,4123,4245,4364,4454,4552,4671,4807,4905,5023,5125,5251,5384,5489,5587,5667,5760,5853,5937,6022,6123,6203,6287,6388,6487,6582,6682,6769,6874,6976,7081,7198,7278,7380",
                         "endColumns": "115,112,106,113,99,94,111,143,121,148,83,99,88,93,113,117,104,124,119,135,172,129,116,121,118,89,97,118,135,97,117,101,125,132,104,97,79,92,92,83,84,100,79,83,100,98,94,99,86,104,101,104,116,79,101,98",
                         "endOffsets": "1557,1670,1777,1891,1991,2086,2198,2342,2464,2613,2697,2797,2886,2980,3094,3212,3317,3442,3562,3698,3871,4001,4118,4240,4359,4449,4547,4666,4802,4900,5018,5120,5246,5379,5484,5582,5662,5755,5848,5932,6017,6118,6198,6282,6383,6482,6577,6677,6764,6869,6971,7076,7193,7273,7375,7474"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Vishal\\.gradle\\caches\\transforms-3\\397655549f6febe3a06d241d75b2b749\\transformed\\foundation-release\\res\\values-da\\values-da.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,145",
-                        "endColumns": "89,86",
-                        "endOffsets": "140,227"
-                    },
-                    "to": {
-                        "startLines": "83,84",
-                        "startColumns": "4,4",
-                        "startOffsets": "8381,8471",
-                        "endColumns": "89,86",
-                        "endOffsets": "8466,8553"
                     }
                 }
             ]

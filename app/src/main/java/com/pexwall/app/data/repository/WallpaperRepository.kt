@@ -7,11 +7,18 @@ import com.pexwall.app.data.db.WallpaperEntity
 import com.pexwall.app.util.Constants
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import com.pexwall.app.data.api.BingApi
+import com.pexwall.app.data.preferences.PreferencesManager
+import com.pexwall.app.util.WallpaperSource
+import kotlinx.coroutines.flow.first
+import com.pexwall.app.data.api.PhotoSrc
 import javax.inject.Singleton
 
 @Singleton
 class WallpaperRepository @Inject constructor(
     private val api: PexelsApi,
+    private val bingApi: BingApi,
+    private val prefs: PreferencesManager,
     private val dao: WallpaperDao
 ) {
 
@@ -48,7 +55,49 @@ class WallpaperRepository @Inject constructor(
         isRandom: Boolean,
         orientation: String
     ): PexelsPhoto? {
+        val source = prefs.wallpaperSource.first()
         val usedIds = dao.getAllUsedPhotoIds().toSet()
+
+        if (source == WallpaperSource.BING) {
+            return try {
+                val bingMarketsToUse = if (isRandom || selectedCategories.isEmpty()) {
+                    listOf(Constants.BING_MARKETS.random().id)
+                } else {
+                    Constants.BING_MARKETS.filter { it.id in selectedCategories }.map { it.id }
+                }
+                val market = bingMarketsToUse.randomOrNull() ?: "en-US"
+                val response = bingApi.getDailyWallpapers(market = market)
+                val photos = response.images.map { bingImage ->
+                    val fullUrl = "https://www.bing.com" + bingImage.urlbase + "_UHD.jpg"
+                    PexelsPhoto(
+                        id = bingImage.urlbase.hashCode().toLong(),
+                        width = 3840,
+                        height = 2160,
+                        url = fullUrl,
+                        photographer = bingImage.copyright,
+                        photographerUrl = "",
+                        photographerId = 0,
+                        avgColor = "#000000",
+                        src = PhotoSrc(
+                            original = fullUrl,
+                            large2x = fullUrl,
+                            large = fullUrl,
+                            medium = fullUrl,
+                            small = fullUrl,
+                            portrait = fullUrl,
+                            landscape = fullUrl,
+                            tiny = fullUrl
+                        ),
+                        
+                        alt = bingImage.title
+                    )
+                }
+                photos.firstOrNull { it.id !in usedIds } ?: photos.randomOrNull()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
 
         val categoriesToUse = if (isRandom || selectedCategories.isEmpty()) {
             listOf(Constants.CATEGORIES.random())

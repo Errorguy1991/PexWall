@@ -1,21 +1,24 @@
-package com.pexwall.app.ui.categories
+﻿package com.pexwall.app.ui.categories
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.pexwall.app.util.Category
 import com.pexwall.app.util.Constants
+import com.pexwall.app.util.WallpaperSource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,135 +29,140 @@ fun CategoriesScreen(
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Home Screen", "Lock Screen")
 
+    val categoriesList = if (uiState.wallpaperSource == WallpaperSource.BING) {
+        Constants.BING_MARKETS
+    } else {
+        Constants.CATEGORIES
+    }
+    val titleText = if (uiState.wallpaperSource == WallpaperSource.BING) "Bing Regions" else "Categories"
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Categories") },
+                title = { Text(titleText, fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
+                    containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
                 )
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Random Mode Toggle
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { viewModel.setRandomMode(!uiState.randomMode) }
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            // iOS Style Segmented Control / Tabs
+            TabRow(
+                selectedTabIndex = selectedTabIndex,
+                containerColor = MaterialTheme.colorScheme.background,
+                modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                Column {
-                    Text("Random Mode", style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        "Pick from any category randomly",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index },
+                        text = { Text(title, fontWeight = if (selectedTabIndex == index) FontWeight.SemiBold else FontWeight.Normal) }
                     )
                 }
-                Switch(
-                    checked = uiState.randomMode,
-                    onCheckedChange = { viewModel.setRandomMode(it) }
-                )
             }
 
-            if (!uiState.randomMode) {
-                TabRow(selectedTabIndex = selectedTabIndex) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = { selectedTabIndex = index },
-                            text = { Text(title) }
+            // Grouped Settings Box for Random Mode
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { viewModel.setRandomMode(!uiState.randomMode) }
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Random Mode", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+                        Text(
+                            if (uiState.wallpaperSource == WallpaperSource.BING) "Pick region randomly" else "Pick from any category randomly",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    Switch(
+                        checked = uiState.randomMode,
+                        onCheckedChange = { viewModel.setRandomMode(it) }
+                    )
                 }
+            }
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            if (!uiState.randomMode) {
                 val currentSelectedCategories = if (selectedTabIndex == 0) uiState.homeCategories else uiState.lockCategories
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                Text(
+                    text = if (uiState.wallpaperSource == WallpaperSource.BING) "SELECT REGIONS" else "SELECT CATEGORIES",
+                    modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                // iOS Grouped List
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    items(Constants.CATEGORIES) { category ->
-                        val isSelected = currentSelectedCategories.contains(category.id)
-                        CategoryCard(
-                            category = category,
-                            isSelected = isSelected,
-                            onClick = {
-                                if (selectedTabIndex == 0) {
-                                    viewModel.toggleHomeCategory(category.id)
-                                } else {
-                                    viewModel.toggleLockCategory(category.id)
+                    Column {
+                        categoriesList.forEachIndexed { index, category ->
+                            val isSelected = currentSelectedCategories.contains(category.id)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (selectedTabIndex == 0) viewModel.toggleHomeCategory(category.id)
+                                        else viewModel.toggleLockCategory(category.id)
+                                    }
+                                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(category.displayName, style = MaterialTheme.typography.bodyLarge)
+                                if (isSelected) {
+                                    Icon(
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = "Selected",
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
                                 }
                             }
-                        )
+                            if (index < categoriesList.size - 1) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(start = 16.dp),
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                                )
+                            }
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.height(100.dp)) // padding for bottom bar
             } else {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "Random Mode is enabled.\nWallpapers will be picked from all categories.",
+                        "Random Mode is enabled.\nWallpapers will be picked randomly.",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
                 }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CategoryCard(
-    category: Category,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) 
-                MaterialTheme.colorScheme.primaryContainer 
-            else 
-                MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            // We use a placeholder since we don't have static images for categories
-            Text(
-                text = category.displayName,
-                modifier = Modifier.align(Alignment.Center),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = if (isSelected) 
-                    MaterialTheme.colorScheme.onPrimaryContainer 
-                else 
-                    MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            
-            if (isSelected) {
-                // Checkmark or indication
-                Badge(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                )
             }
         }
     }

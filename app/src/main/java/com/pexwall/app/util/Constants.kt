@@ -8,18 +8,28 @@ object Constants {
     const val HISTORY_RETENTION_DAYS = 7
 
     val CATEGORIES = listOf(
-        Category("nature", "Nature", "nature landscape"),
-        Category("city", "City", "city skyline urban"),
-        Category("space", "Space", "space galaxy universe"),
-        Category("ocean", "Ocean", "ocean sea beach"),
-        Category("mountains", "Mountains", "mountains peaks"),
-        Category("abstract", "Abstract", "abstract colorful pattern"),
-        Category("animals", "Animals", "animals wildlife"),
-        Category("flowers", "Flowers", "flowers botanical"),
-        Category("minimal", "Minimal", "minimal simple clean"),
-        Category("dark", "Dark", "dark moody noir"),
-        Category("technology", "Technology", "technology futuristic"),
-        Category("forest", "Forest", "forest trees woods")
+        Category("abstract", "Abstract", "abstract"),
+        Category("art", "Art", "art"),
+        Category("minimal", "Minimal", "minimal"),
+        Category("texture", "Texture", "texture"),
+        Category("nature", "Nature", "nature"),
+        Category("space", "Space", "space"),
+        Category("architecture", "Architecture", "architecture"),
+        Category("city", "City", "city"),
+        Category("animals", "Animals", "animals"),
+        Category("food", "Food", "food")
+    )
+
+    val BING_MARKETS = listOf(
+        Category("en-US", "United States", "en-US"),
+        Category("zh-CN", "China", "zh-CN"),
+        Category("ja-JP", "Japan", "ja-JP"),
+        Category("en-IN", "India", "en-IN"),
+        Category("de-DE", "Germany", "de-DE"),
+        Category("fr-FR", "France", "fr-FR"),
+        Category("en-GB", "United Kingdom", "en-GB"),
+        Category("es-ES", "Spain", "es-ES"),
+        Category("it-IT", "Italy", "it-IT")
     )
 
     val FREQUENCY_OPTIONS = listOf(
@@ -46,7 +56,13 @@ data class FrequencyOption(
 enum class WallpaperMode(val displayName: String) {
     HOME_ONLY("Home Screen Only"),
     LOCK_ONLY("Lock Screen Only"),
-    BOTH_SAME("Both (Same Wallpaper)")
+    BOTH_SAME("Both (Same Wallpaper)"),
+    SEPARATE_HOME_LOCK("Separate Home & Lock screen")
+}
+
+enum class WallpaperSource(val displayName: String) {
+    PEXELS("Pexels (High Quality)"),
+    BING("Bing Daily (Varied)")
 }
 
 /** Holds the current API key for runtime use by OkHttp interceptor */
