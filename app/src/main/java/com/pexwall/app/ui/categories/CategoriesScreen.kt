@@ -121,7 +121,7 @@ fun CategoriesScreen(
                                 text = groupName.uppercase(),
                                 modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
                                 style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = Color.White
                             )
                         }
                         

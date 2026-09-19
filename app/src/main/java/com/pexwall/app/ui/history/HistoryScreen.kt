@@ -116,7 +116,7 @@ fun HistoryScreen(
                             Text(
                                 text = dateHeader,
                                 style = MaterialTheme.typography.titleSmall,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = Color.White,
                                 modifier = Modifier.padding(top = 8.dp)
                             )
                         }

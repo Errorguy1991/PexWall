@@ -298,7 +298,7 @@ fun SettingsSectionHeader(title: String) {
         text = title,
         modifier = Modifier.padding(start = 32.dp, top = 24.dp, bottom = 8.dp),
         style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = Color.White
     )
 }
 
@@ -319,7 +319,7 @@ fun SettingsToggleItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.bodyLarge)
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
         Switch(
             checked = checked,
@@ -344,7 +344,7 @@ fun SettingsClickableItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.bodyLarge)
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
     }
 }
@@ -361,7 +361,7 @@ fun SettingsSliderItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(title, style = MaterialTheme.typography.bodyLarge)
-            Text("%", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text("%", style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
         Slider(
             value = value.toFloat(),
