@@ -155,6 +155,16 @@ fun SettingsScreen(
                 }
             }
 
+            SettingsSectionHeader("SUPPORT")
+            SettingsGroup {
+                val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+                SettingsClickableItem(
+                    title = "Donate on Ko-fi",
+                    subtitle = "Support the developer and buy me a coffee \u2615",
+                    onClick = { uriHandler.openUri("https://ko-fi.com/vivescrn") }
+                )
+            }
+
             Spacer(modifier = Modifier.height(100.dp)) // padding for bottom bar
         }
     }

@@ -96,8 +96,8 @@ class PreferencesManager @Inject constructor(
     }
 
     val wallpaperSource: Flow<WallpaperSource> = context.dataStore.data.map { prefs ->
-        val name = prefs[KEY_WALLPAPER_SOURCE] ?: WallpaperSource.PEXELS.name
-        try { WallpaperSource.valueOf(name) } catch (e: Exception) { WallpaperSource.PEXELS }
+        val name = prefs[KEY_WALLPAPER_SOURCE] ?: WallpaperSource.BING.name
+        try { WallpaperSource.valueOf(name) } catch (e: Exception) { WallpaperSource.BING }
     }
 
     suspend fun setWallpaperSource(source: WallpaperSource) { context.dataStore.edit { it[KEY_WALLPAPER_SOURCE] = source.name } }

@@ -22,7 +22,7 @@ data class SettingsUiState(
     val frequencyMinutes: Long = 1440L,
     val wifiOnly: Boolean = false,
     val wallpaperMode: WallpaperMode = WallpaperMode.BOTH_SAME,
-    val wallpaperSource: com.pexwall.app.util.WallpaperSource = com.pexwall.app.util.WallpaperSource.PEXELS,
+    val wallpaperSource: com.pexwall.app.util.WallpaperSource = com.pexwall.app.util.WallpaperSource.BING,
     val autoChangeEnabled: Boolean = true,
     val homeCategories: Set<String> = setOf("nature"),
     val lockCategories: Set<String> = setOf("nature"),
