@@ -8,16 +8,18 @@ object Constants {
     const val HISTORY_RETENTION_DAYS = 7
 
     val CATEGORIES = listOf(
-        Category("abstract", "Abstract", "abstract"),
-        Category("art", "Art", "art"),
-        Category("minimal", "Minimal", "minimal"),
-        Category("texture", "Texture", "texture"),
-        Category("nature", "Nature", "nature"),
-        Category("space", "Space", "space"),
-        Category("architecture", "Architecture", "architecture"),
-        Category("city", "City", "city"),
-        Category("animals", "Animals", "animals"),
-        Category("food", "Food", "food")
+        Category("all", "All", "wallpaper"),
+        Category("nature", "Nature", "nature landscape"),
+        Category("urban", "Urban", "urban city street"),
+        Category("dark", "Dark / AMOLED", "dark amoled black"),
+        Category("minimal", "Minimal", "minimal simple"),
+        Category("space", "Space", "space galaxy universe"),
+        Category("anime", "Anime", "anime aesthetic"),
+        Category("cyberpunk", "Cyberpunk", "cyberpunk neon"),
+        Category("abstract", "Abstract", "abstract pattern"),
+        Category("vehicles", "Vehicles", "cars vehicles supercars"),
+        Category("textures", "Textures", "texture background"),
+        Category("art", "Art", "art digital-art")
     )
 
     val BING_MARKETS = listOf(

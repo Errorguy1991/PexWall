@@ -112,7 +112,7 @@ class WallpaperRepository @Inject constructor(
 
             while (page <= maxPages) {
                 val photos = fetchWallpapers(category.searchQuery, page, orientation)
-                if (photos.isEmpty()) break
+                if (photos.isEmpty()) { if (page > 1) { page = 1; continue } else break }
 
                 val unusedPhoto = photos.firstOrNull { it.id !in usedIds }
                 if (unusedPhoto != null) return unusedPhoto
