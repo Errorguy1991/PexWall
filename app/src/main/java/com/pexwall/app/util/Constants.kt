@@ -1,42 +1,53 @@
 package com.pexwall.app.util
 
 object Constants {
-    // Default API key - users will enter their own on first launch
     const val DEFAULT_API_KEY = "qHfCemtP3xT00RhAoRR9L3LQPfvSJm8Yr7HHyy0LOns0U1jrFsOe36nR"
     const val PEXELS_BASE_URL = "https://api.pexels.com/v1/"
     const val DEFAULT_PER_PAGE = 15
     const val HISTORY_RETENTION_DAYS = 7
 
     val CATEGORIES = listOf(
-        Category("all", "All", "wallpaper"),
-        Category("nature", "Nature", "nature landscape"),
-        Category("urban", "Urban", "urban city street"),
-        Category("dark", "Dark / AMOLED", "dark amoled black"),
-        Category("minimal", "Minimal", "minimal simple"),
-        Category("space", "Space", "space galaxy universe"),
-        Category("anime", "Anime", "anime aesthetic"),
-        Category("cyberpunk", "Cyberpunk", "cyberpunk neon"),
-        Category("abstract", "Abstract", "abstract pattern"),
-        Category("vehicles", "Vehicles", "cars vehicles supercars"),
-        Category("textures", "Textures", "texture background"),
-        Category("art", "Art", "art digital-art")
+        Category("all", "All", "wallpaper", "General"),
+        Category("nature", "Nature", "nature landscape", "General"),
+        Category("urban", "Urban", "urban city street", "General"),
+        Category("dark", "Dark / AMOLED", "dark amoled black", "General"),
+        Category("minimal", "Minimal", "minimal simple", "General"),
+        Category("art", "Art", "art digital-art", "General"),
+        
+        Category("cyberpunk", "Cyberpunk / Neon", "cyberpunk neon nightlife", "Aesthetic & Mood"),
+        Category("lofi", "Lo-Fi / Cozy", "lofi cozy aesthetic room", "Aesthetic & Mood"),
+        Category("pastel", "Pastel / Soft", "pastel soft aesthetic", "Aesthetic & Mood"),
+        Category("vintage", "Vintage / Retro", "vintage retro 90s aesthetic", "Aesthetic & Mood"),
+        Category("moody", "Moody / Cinematic", "moody cinematic fog", "Aesthetic & Mood"),
+        
+        Category("space", "Space & Cosmos", "space cosmos universe galaxy", "Subject & Objects"),
+        Category("vehicles", "Vehicles / Automotive", "vehicles supercar", "Subject & Objects"),
+        Category("gaming", "Gaming", "gaming esports setup", "Subject & Objects"),
+        Category("anime", "Anime & Manga", "anime aesthetic manga", "Subject & Objects"),
+        Category("wildlife", "Wildlife / Fauna", "wildlife animals nature", "Subject & Objects"),
+        Category("typography", "Typography & Quotes", "typography quotes minimalist", "Subject & Objects"),
+        
+        Category("3d_renders", "3D Renders / CGI", "3d render abstract cgi", "Form & Material"),
+        Category("textures", "Textures & Patterns", "textures patterns background", "Form & Material"),
+        Category("aerial", "Aerial / Satellite", "aerial drone view", "Form & Material"),
+        Category("gradients", "Gradients / Mesh", "gradient mesh smooth", "Form & Material")
     )
 
     val BING_MARKETS = listOf(
-        Category("en-US", "United States", "en-US"),
-        Category("zh-CN", "China", "zh-CN"),
-        Category("ja-JP", "Japan", "ja-JP"),
-        Category("en-IN", "India", "en-IN"),
-        Category("de-DE", "Germany", "de-DE"),
-        Category("fr-FR", "France", "fr-FR"),
-        Category("en-GB", "United Kingdom", "en-GB"),
-        Category("es-ES", "Spain", "es-ES"),
-        Category("it-IT", "Italy", "it-IT")
+        Category("en-US", "United States", "en-US", "Bing Regions"),
+        Category("ja-JP", "Japan", "ja-JP", "Bing Regions"),
+        Category("en-GB", "United Kingdom", "en-GB", "Bing Regions"),
+        Category("de-DE", "Germany", "de-DE", "Bing Regions"),
+        Category("fr-FR", "France", "fr-FR", "Bing Regions"),
+        Category("it-IT", "Italy", "it-IT", "Bing Regions"),
+        Category("en-CA", "Canada", "en-CA", "Bing Regions"),
+        Category("zh-CN", "China", "zh-CN", "Bing Regions"),
+        Category("es-ES", "Spain", "es-ES", "Bing Regions"),
+        Category("en-IN", "India", "en-IN", "Bing Regions")
     )
 
     val FREQUENCY_OPTIONS = listOf(
-        FrequencyOption("15 Minutes", 15L),
-        FrequencyOption("30 Minutes", 30L),
+        FrequencyOption("15 Mins", 15L),
         FrequencyOption("1 Hour", 60L),
         FrequencyOption("6 Hours", 360L),
         FrequencyOption("12 Hours", 720L),
@@ -47,7 +58,8 @@ object Constants {
 data class Category(
     val id: String,
     val displayName: String,
-    val searchQuery: String
+    val searchQuery: String,
+    val group: String = "General"
 )
 
 data class FrequencyOption(
@@ -67,7 +79,6 @@ enum class WallpaperSource(val displayName: String) {
     BING("Bing Daily (Varied)")
 }
 
-/** Holds the current API key for runtime use by OkHttp interceptor */
 object ApiKeyHolder {
     @Volatile
     var apiKey: String = Constants.DEFAULT_API_KEY
