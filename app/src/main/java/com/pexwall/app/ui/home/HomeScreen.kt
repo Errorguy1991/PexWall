@@ -1,4 +1,4 @@
-﻿package com.pexwall.app.ui.home
+package com.pexwall.app.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -74,7 +74,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     // 64dp for bar + 24dp bottom pad + 24dp spacing + navBar insets
-                    .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 112.dp),
+                    .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 184.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
@@ -91,29 +91,7 @@ fun HomeScreen(
                     )
                 }
                 
-                // Glassy pill button
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White.copy(alpha = 0.2f))
-                        .clickable { viewModel.changeWallpaperNow() }
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (uiState.isLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                color = Color.White,
-                                strokeWidth = 2.dp
-                            )
-                        } else {
-                            Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(if (uiState.isLoading) "Changing..." else "Change", color = Color.White, fontWeight = FontWeight.SemiBold)
-                    }
-                }
-            }
+                            }
         }
 
         // Error Snackbar

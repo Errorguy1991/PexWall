@@ -42,11 +42,11 @@ fun CategoriesScreen(
             TopAppBar(
                 title = { Text(titleText, fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent.copy(alpha = 0.8f)
                 )
             )
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = androidx.compose.ui.graphics.Color.Transparent
     ) { padding ->
         Column(
             modifier = Modifier
@@ -56,7 +56,7 @@ fun CategoriesScreen(
             // iOS Style Segmented Control / Tabs
             TabRow(
                 selectedTabIndex = selectedTabIndex,
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = androidx.compose.ui.graphics.Color.Transparent,
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
                 tabs.forEachIndexed { index, title ->

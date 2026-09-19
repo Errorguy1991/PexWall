@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
             PexWallTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = androidx.compose.ui.graphics.Color.Transparent
                 ) {
                     val hasSeenDialog by preferencesManager.hasSeenApiKeyDialog.collectAsState(initial = false)
                     val apiKey by preferencesManager.apiKey.collectAsState(initial = "")
@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     
+                    com.pexwall.app.ui.components.MeshGradientBackground()
                     PexWallNavGraph()
                 }
             }

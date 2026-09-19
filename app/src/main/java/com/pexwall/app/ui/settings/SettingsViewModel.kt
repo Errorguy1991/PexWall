@@ -46,6 +46,9 @@ class SettingsViewModel @Inject constructor(
             preferencesManager.apiKey.collect { val_ -> _uiState.update { it.copy(apiKey = val_) } }
         }
         viewModelScope.launch {
+            preferencesManager.wallpaperSource.collect { val_ -> _uiState.update { it.copy(wallpaperSource = val_) } }
+        }
+        viewModelScope.launch {
             preferencesManager.frequencyMinutes.collect { val_ -> _uiState.update { it.copy(frequencyMinutes = val_) } }
         }
         viewModelScope.launch {
