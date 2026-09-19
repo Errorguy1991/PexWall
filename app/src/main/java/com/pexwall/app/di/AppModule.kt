@@ -84,6 +84,23 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideUnsplashApi(moshi: Moshi): com.pexwall.app.data.api.UnsplashApi {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constants.UNSPLASH_BASE_URL)
+            .client(client)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+        return retrofit.create(com.pexwall.app.data.api.UnsplashApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(
             context,

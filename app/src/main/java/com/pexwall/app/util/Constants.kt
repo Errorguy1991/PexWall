@@ -1,6 +1,8 @@
 package com.pexwall.app.util
 
 object Constants {
+    const val UNSPLASH_ACCESS_KEY = "F9zz_iAOOQlLNfk9kqzxj3lr0jmj44lHg7xLWsPsXFw"
+    const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
     const val DEFAULT_API_KEY = "qHfCemtP3xT00RhAoRR9L3LQPfvSJm8Yr7HHyy0LOns0U1jrFsOe36nR"
     const val PEXELS_BASE_URL = "https://api.pexels.com/v1/"
     const val DEFAULT_PER_PAGE = 15
@@ -46,6 +48,21 @@ object Constants {
         Category("en-IN", "India", "en-IN", "Bing Regions")
     )
 
+    val UNSPLASH_CATEGORIES = listOf(
+        Category("nature", "Nature", "nature", "Unsplash Categories"),
+        Category("animals", "Animals", "animals", "Unsplash Categories"),
+        Category("art", "Art", "art", "Unsplash Categories"),
+        Category("design", "Design", "design", "Unsplash Categories"),
+        Category("minimalism", "Minimalism", "minimalism", "Unsplash Categories"),
+        Category("travel", "Travel", "travel", "Unsplash Categories"),
+        Category("architecture", "Architecture", "architecture", "Unsplash Categories"),
+        Category("cars", "Cars", "cars", "Unsplash Categories"),
+        Category("sports", "Sports", "sports", "Unsplash Categories"),
+        Category("people", "People", "people", "Unsplash Categories"),
+        Category("feeling", "Feeling", "feeling", "Unsplash Categories"),
+        Category("culture", "Culture", "culture", "Unsplash Categories")
+    )
+
     val FREQUENCY_OPTIONS = listOf(
         FrequencyOption("15 Mins", 15L),
         FrequencyOption("1 Hour", 60L),
@@ -76,7 +93,8 @@ enum class WallpaperMode(val displayName: String) {
 
 enum class WallpaperSource(val displayName: String) {
     PEXELS("Pexels (High Quality)"),
-    BING("Bing Daily (Varied)")
+    BING("Bing Daily (Varied)"),
+    UNSPLASH("Unsplash (Curated)")
 }
 
 object ApiKeyHolder {

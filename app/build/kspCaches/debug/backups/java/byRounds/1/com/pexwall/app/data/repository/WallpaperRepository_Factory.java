@@ -2,6 +2,7 @@ package com.pexwall.app.data.repository;
 
 import com.pexwall.app.data.api.BingApi;
 import com.pexwall.app.data.api.PexelsApi;
+import com.pexwall.app.data.api.UnsplashApi;
 import com.pexwall.app.data.db.WallpaperDao;
 import com.pexwall.app.data.preferences.PreferencesManager;
 import dagger.internal.DaggerGenerated;
@@ -29,32 +30,35 @@ public final class WallpaperRepository_Factory implements Factory<WallpaperRepos
 
   private final Provider<BingApi> bingApiProvider;
 
+  private final Provider<UnsplashApi> unsplashApiProvider;
+
   private final Provider<PreferencesManager> prefsProvider;
 
   private final Provider<WallpaperDao> daoProvider;
 
   public WallpaperRepository_Factory(Provider<PexelsApi> apiProvider,
-      Provider<BingApi> bingApiProvider, Provider<PreferencesManager> prefsProvider,
-      Provider<WallpaperDao> daoProvider) {
+      Provider<BingApi> bingApiProvider, Provider<UnsplashApi> unsplashApiProvider,
+      Provider<PreferencesManager> prefsProvider, Provider<WallpaperDao> daoProvider) {
     this.apiProvider = apiProvider;
     this.bingApiProvider = bingApiProvider;
+    this.unsplashApiProvider = unsplashApiProvider;
     this.prefsProvider = prefsProvider;
     this.daoProvider = daoProvider;
   }
 
   @Override
   public WallpaperRepository get() {
-    return newInstance(apiProvider.get(), bingApiProvider.get(), prefsProvider.get(), daoProvider.get());
+    return newInstance(apiProvider.get(), bingApiProvider.get(), unsplashApiProvider.get(), prefsProvider.get(), daoProvider.get());
   }
 
   public static WallpaperRepository_Factory create(Provider<PexelsApi> apiProvider,
-      Provider<BingApi> bingApiProvider, Provider<PreferencesManager> prefsProvider,
-      Provider<WallpaperDao> daoProvider) {
-    return new WallpaperRepository_Factory(apiProvider, bingApiProvider, prefsProvider, daoProvider);
+      Provider<BingApi> bingApiProvider, Provider<UnsplashApi> unsplashApiProvider,
+      Provider<PreferencesManager> prefsProvider, Provider<WallpaperDao> daoProvider) {
+    return new WallpaperRepository_Factory(apiProvider, bingApiProvider, unsplashApiProvider, prefsProvider, daoProvider);
   }
 
   public static WallpaperRepository newInstance(PexelsApi api, BingApi bingApi,
-      PreferencesManager prefs, WallpaperDao dao) {
-    return new WallpaperRepository(api, bingApi, prefs, dao);
+      UnsplashApi unsplashApi, PreferencesManager prefs, WallpaperDao dao) {
+    return new WallpaperRepository(api, bingApi, unsplashApi, prefs, dao);
   }
 }

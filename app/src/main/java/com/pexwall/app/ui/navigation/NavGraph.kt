@@ -3,11 +3,14 @@ package com.pexwall.app.ui.navigation
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
@@ -23,13 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.pexwall.app.ui.categories.CategoriesScreen
 import com.pexwall.app.ui.history.HistoryScreen
 import com.pexwall.app.ui.home.HomeScreen
@@ -39,6 +37,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.HazeStyle
+import kotlinx.coroutines.launch
 
 sealed class Screen(
     val route: String,
@@ -60,37 +59,36 @@ val bottomNavItems = listOf(
     Screen.Settings
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PexWallNavGraph(homeViewModel: HomeViewModel = hiltViewModel()) {
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
     val hazeState = remember { HazeState() }
+    val pagerState = rememberPagerState(pageCount = { bottomNavItems.size })
+    val coroutineScope = rememberCoroutineScope()
     
-    val homeUiState by homeViewModel.uiState.collectAsState()
+    val currentDestinationIndex = pagerState.currentPage
 
-    // Outermost box DOES NOT have haze applied!
     Box(modifier = Modifier.fillMaxSize()) {
         
-        // This Box contains the background and content to be blurred
         Box(modifier = Modifier.fillMaxSize().haze(state = hazeState)) {
             com.pexwall.app.ui.components.MeshGradientBackground()
             CompositionLocalProvider(LocalHazeState provides hazeState) {
-                NavHost(
-                    navController = navController,
-                    startDestination = Screen.Home.route,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    composable(Screen.Home.route) { HomeScreen(viewModel = homeViewModel) }
-                    composable(Screen.Categories.route) { CategoriesScreen() }
-                    composable(Screen.History.route) { HistoryScreen() }
-                    composable(Screen.Settings.route) { SettingsScreen() }
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize(),
+                    beyondBoundsPageCount = 3
+                ) { page ->
+                    when (page) {
+                        0 -> HomeScreen(viewModel = homeViewModel)
+                        1 -> CategoriesScreen()
+                        2 -> HistoryScreen()
+                        3 -> SettingsScreen()
+                    }
                 }
             }
         }
 
-        // iOS Style Floating Liquid Glass Bottom Island
-        // This is OUTSIDE the haze capture box, so it won't blur itself!
+        // Floating Navigation Island
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -112,10 +110,10 @@ fun PexWallNavGraph(homeViewModel: HomeViewModel = hiltViewModel()) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 // Change Button (Centered above tabs)
-                if (currentDestination?.route != Screen.Settings.route && currentDestination?.route != Screen.History.route) {
+                if (currentDestinationIndex == 0 || currentDestinationIndex == 1) {
                     Button(
                         onClick = {
-                            if (currentDestination?.route == Screen.Home.route) {
+                            if (currentDestinationIndex == 0) {
                                 homeViewModel.changeWallpaperNow()
                             }
                         },
@@ -139,65 +137,70 @@ fun PexWallNavGraph(homeViewModel: HomeViewModel = hiltViewModel()) {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                // Tabs Row
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                // Inner Pill for Tabs
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(Color.White.copy(alpha = 0.1f))
+                        .padding(4.dp)
                 ) {
-                    bottomNavItems.forEach { screen ->
-                        val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
-                        val animatedWeight by animateDpAsState(
-                            targetValue = if (isSelected) 36.dp else 24.dp,
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                stiffness = Spring.StiffnessLow
-                            ),
-                            label = "tab_size"
-                        )
-                        
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp)
-                                .clip(RoundedCornerShape(28.dp))
-                                .clickable(
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null
-                                ) {
-                                    navController.navigate(screen.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center,
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        bottomNavItems.forEachIndexed { index, screen ->
+                            val isSelected = currentDestinationIndex == index
+                            val animatedWeight by animateDpAsState(
+                                targetValue = if (isSelected) 36.dp else 24.dp,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                ),
+                                label = "tab_size"
+                            )
+                            
+                            Box(
                                 modifier = Modifier
-                                    .background(
-                                        color = if (isSelected) Color.White.copy(alpha = 0.15f) else Color.Transparent,
-                                        shape = RoundedCornerShape(24.dp)
-                                    )
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .weight(1f)
+                                    .height(56.dp)
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null
+                                    ) {
+                                        coroutineScope.launch {
+                                            pagerState.animateScrollToPage(index)
+                                        }
+                                    },
+                                contentAlignment = Alignment.Center
                             ) {
-                                Icon(
-                                    imageVector = screen.icon,
-                                    contentDescription = screen.title,
-                                    modifier = Modifier.size(animatedWeight),
-                                    tint = if (isSelected) Color.White else Color.White.copy(alpha = 0.5f)
-                                )
-                                if (isSelected) {
-                                    Spacer(modifier = Modifier.height(2.dp))
-                                    Text(
-                                        text = screen.title,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = Color.White
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .background(
+                                            color = if (isSelected) Color.White.copy(alpha = 0.15f) else Color.Transparent,
+                                            shape = RoundedCornerShape(20.dp)
+                                        )
+                                        .padding(horizontal = 16.dp, vertical = 6.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = screen.icon,
+                                        contentDescription = screen.title,
+                                        modifier = Modifier.size(animatedWeight),
+                                        tint = if (isSelected) Color.White else Color.White.copy(alpha = 0.6f)
                                     )
+                                    if (!isSelected) {
+                                        Spacer(modifier = Modifier.height(2.dp))
+                                        Text(
+                                            text = screen.title,
+                                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                            color = Color.White.copy(alpha = 0.6f)
+                                        )
+                                    }
                                 }
                             }
                         }

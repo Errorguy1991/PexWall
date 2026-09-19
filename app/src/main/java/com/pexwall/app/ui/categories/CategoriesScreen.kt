@@ -33,14 +33,18 @@ fun CategoriesScreen(
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Home Screen", "Lock Screen")
 
-    val categoriesList = if (uiState.wallpaperSource == WallpaperSource.BING) {
-        Constants.BING_MARKETS
-    } else {
-        Constants.CATEGORIES
+        val categoriesList = when (uiState.wallpaperSource) {
+        WallpaperSource.BING -> Constants.BING_MARKETS
+        WallpaperSource.UNSPLASH -> Constants.UNSPLASH_CATEGORIES
+        else -> Constants.CATEGORIES
     }
     val groupedCategories = categoriesList.groupBy { it.group }
 
-    val titleText = if (uiState.wallpaperSource == WallpaperSource.BING) "Bing Regions" else "Categories"
+        val titleText = when (uiState.wallpaperSource) {
+        WallpaperSource.BING -> "Bing Regions"
+        WallpaperSource.UNSPLASH -> "Unsplash Categories"
+        else -> "Pexels Categories"
+    }
 
     Scaffold(
         topBar = {
@@ -98,7 +102,7 @@ fun CategoriesScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Text("Random Mode", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
                                 Text(
-                                    if (uiState.wallpaperSource == WallpaperSource.BING) "Pick region randomly" else "Pick from any category randomly",
+                                    when (uiState.wallpaperSource) { WallpaperSource.BING -> "Pick region randomly"; WallpaperSource.UNSPLASH -> "Pick category randomly"; else -> "Pick from any category randomly" },
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

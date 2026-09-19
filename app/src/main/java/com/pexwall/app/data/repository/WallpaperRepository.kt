@@ -12,12 +12,14 @@ import com.pexwall.app.data.preferences.PreferencesManager
 import com.pexwall.app.util.WallpaperSource
 import kotlinx.coroutines.flow.first
 import com.pexwall.app.data.api.PhotoSrc
+import com.pexwall.app.data.api.UnsplashApi
 import javax.inject.Singleton
 
 @Singleton
 class WallpaperRepository @Inject constructor(
     private val api: PexelsApi,
     private val bingApi: BingApi,
+    private val unsplashApi: UnsplashApi,
     private val prefs: PreferencesManager,
     private val dao: WallpaperDao
 ) {
@@ -94,6 +96,49 @@ class WallpaperRepository @Inject constructor(
                     )
                 }
                 photos.firstOrNull { it.id !in usedIds } ?: photos.randomOrNull()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        if (source == WallpaperSource.UNSPLASH) {
+            return try {
+                val unsplashCategoriesToUse = if (isRandom || selectedCategories.isEmpty()) {
+                    listOf(Constants.UNSPLASH_CATEGORIES.random().id)
+                } else {
+                    Constants.UNSPLASH_CATEGORIES.filter { it.id in selectedCategories }.map { it.id }
+                }
+                val query = unsplashCategoriesToUse.randomOrNull() ?: "wallpaper"
+                val response = unsplashApi.getRandomPhoto(
+                    query = query,
+                    orientation = if (orientation == "any") "squarish" else orientation,
+                    clientId = Constants.UNSPLASH_ACCESS_KEY
+                )
+                
+                val fullUrl = response.urls.raw
+                val photo = PexelsPhoto(
+                    id = response.id.hashCode().toLong(),
+                    width = 3840,
+                    height = 2160,
+                    url = fullUrl,
+                    photographer = response.user.name,
+                    photographerUrl = response.user.links.html,
+                    photographerId = response.user.name.hashCode().toLong(),
+                    avgColor = response.color ?: "#000000",
+                    src = PhotoSrc(
+                        original = response.urls.raw,
+                        large2x = response.urls.full,
+                        large = response.urls.regular,
+                        medium = response.urls.regular,
+                        small = response.urls.small,
+                        portrait = response.urls.regular,
+                        landscape = response.urls.regular,
+                        tiny = response.urls.thumb
+                    ),
+                    alt = "Unsplash Photo by " + response.user.name
+                )
+                photo
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
