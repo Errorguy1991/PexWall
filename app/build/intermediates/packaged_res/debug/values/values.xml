@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
-    <string name="app_name">PexWall</string>
+    <string name="app_name">Vivescrn</string>
     <string name="apply_wallpaper">Apply this wallpaper</string>
     <string name="change_now">Change Now</string>
     <string name="frequency">Change Frequency</string>

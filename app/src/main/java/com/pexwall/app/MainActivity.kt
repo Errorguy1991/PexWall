@@ -9,6 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.Image
+import androidx.compose.ui.Alignment
 import com.pexwall.app.data.preferences.PreferencesManager
 import com.pexwall.app.ui.navigation.PexWallNavGraph
 import com.pexwall.app.ui.theme.PexWallTheme
@@ -68,10 +73,20 @@ fun WelcomeDialog(onDismiss: () -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Welcome to PexWall!") },
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.app_logo),
+                    contentDescription = "App Logo",
+                    modifier = Modifier.size(40.dp).clip(RoundedCornerShape(8.dp))
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text("Welcome to Vivescrn!")
+            }
+        },
         text = {
             Column {
-                Text("PexWall brings beautiful wallpapers directly to your home and lock screens.")
+                Text("Vivescrn brings beautiful wallpapers directly to your home and lock screens.")
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("By default, the app uses Bing's daily wallpapers, which requires no setup!")
                 Spacer(modifier = Modifier.height(8.dp))

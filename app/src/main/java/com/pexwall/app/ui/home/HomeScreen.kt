@@ -54,44 +54,53 @@ fun HomeScreen(
                 contentScale = ContentScale.Crop // Crop fits it to mobile properly
             )
 
-            // Gradient overlay for bottom text readability
+            // Top Gradient overlay for readability
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .align(Alignment.BottomCenter)
+                    .height(200.dp)
+                    .align(Alignment.TopCenter)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f))
+                            colors = listOf(Color.Black.copy(alpha = 0.7f), Color.Transparent)
                         )
                     )
             )
 
-            // Photographer and Change Button safe above the bottom bar
-            Row(
+            // Top Left Source and Photographer Info
+            Column(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.TopStart)
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    // 64dp for bar + 24dp bottom pad + 24dp spacing + navBar insets
-                    .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 184.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
+                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 24.dp)
             ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        "Photo by",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color.White.copy(alpha = 0.7f)
-                    )
-                    Text(
-                        wallpaper.photographer,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                        color = Color.White
-                    )
+                val sourceName = when {
+                    wallpaper.photographerUrl.contains("unsplash.com", ignoreCase = true) -> "Source: Unsplash"
+                    wallpaper.photographerUrl.contains("pexels.com", ignoreCase = true) -> "Source: Pexels"
+                    else -> "Source: Bing"
                 }
+
+                Text(
+                    text = sourceName,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                    color = Color.White
+                )
                 
-                            }
+                Spacer(modifier = Modifier.height(4.dp))
+                
+                val infoText = if (sourceName == "Source: Bing") {
+                    wallpaper.photographer // Bing has the full copyright string here
+                } else {
+                    "Photo by " + wallpaper.photographer
+                }
+
+                Text(
+                    text = infoText,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White.copy(alpha = 0.9f)
+                )
+            }
         }
 
         // Error Snackbar
