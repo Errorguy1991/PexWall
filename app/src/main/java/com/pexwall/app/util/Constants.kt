@@ -1,7 +1,7 @@
 package com.pexwall.app.util
 
 object Constants {
-    const val UNSPLASH_ACCESS_KEY = "F9zz_iAOOQlLNfk9kqzxj3lr0jmj44lHg7xLWsPsXFw"
+    const val UNSPLASH_ACCESS_KEY = "D62F_cvEdqecuIWCrQOVtUJDqnKmo-xa_4NsNoJTHI4"
     const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
     const val DEFAULT_API_KEY = "qHfCemtP3xT00RhAoRR9L3LQPfvSJm8Yr7HHyy0LOns0U1jrFsOe36nR"
     const val PEXELS_BASE_URL = "https://api.pexels.com/v1/"
