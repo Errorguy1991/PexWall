@@ -37,8 +37,8 @@ data class UnsplashUserLinks(
 interface UnsplashApi {
     @GET("photos/random")
     suspend fun getRandomPhoto(
+        @retrofit2.http.Header("Authorization") authHeader: String,
         @Query("query") query: String,
-        @Query("orientation") orientation: String = "portrait",
-        @Query("client_id") clientId: String
+        @Query("orientation") orientation: String = "portrait"
     ): UnsplashPhoto
 }
