@@ -100,4 +100,6 @@ enum class WallpaperSource(val displayName: String) {
 object ApiKeyHolder {
     @Volatile
     var apiKey: String = Constants.DEFAULT_API_KEY
+    @Volatile
+    var unsplashApiKey: String = Constants.UNSPLASH_ACCESS_KEY
 }

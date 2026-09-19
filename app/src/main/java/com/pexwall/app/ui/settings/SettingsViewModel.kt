@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 data class SettingsUiState(
     val apiKey: String = "",
+    val unsplashApiKey: String = "",
     val frequencyMinutes: Long = 1440L,
     val wifiOnly: Boolean = false,
     val wallpaperMode: WallpaperMode = WallpaperMode.BOTH_SAME,
@@ -42,6 +43,9 @@ class SettingsViewModel @Inject constructor(
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            preferencesManager.unsplashApiKey.collect { val_ -> _uiState.update { it.copy(unsplashApiKey = val_) } }
+        }
         viewModelScope.launch {
             preferencesManager.apiKey.collect { val_ -> _uiState.update { it.copy(apiKey = val_) } }
         }
@@ -84,11 +88,13 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun setApiKey(key: String) {
-        viewModelScope.launch {
-            val validKey = if (key.isBlank()) Constants.DEFAULT_API_KEY else key
-            ApiKeyHolder.apiKey = validKey
-            preferencesManager.setApiKey(validKey)
-        }
+        ApiKeyHolder.apiKey = key
+        viewModelScope.launch { preferencesManager.setApiKey(key) }
+    }
+
+    fun setUnsplashApiKey(key: String) {
+        ApiKeyHolder.unsplashApiKey = key
+        viewModelScope.launch { preferencesManager.setUnsplashApiKey(key) }
     }
 
     fun setFrequency(minutes: Long) {

@@ -38,6 +38,8 @@ fun SettingsScreen(
     var showFrequencyDialog by remember { mutableStateOf(false) }
     var showModeDialog by remember { mutableStateOf(false) }
     var showSourceDialog by remember { mutableStateOf(false) }
+    var showPexelsKeyDialog by remember { mutableStateOf(false) }
+    var showUnsplashKeyDialog by remember { mutableStateOf(false) }
     var showOrientationDialog by remember { mutableStateOf(false) }
     
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -102,6 +104,23 @@ fun SettingsScreen(
                 )
             }
             
+            // Appearance Section
+            // API Keys Section
+            SettingsSectionHeader("API KEYS")
+            SettingsGroup {
+                SettingsClickableItem(
+                    title = "Pexels API Key",
+                    subtitle = if (uiState.apiKey.isBlank() || uiState.apiKey == Constants.DEFAULT_API_KEY) "Using default (rate limited)" else "Custom key set",
+                    onClick = { showPexelsKeyDialog = true }
+                )
+                SettingsDivider()
+                SettingsClickableItem(
+                    title = "Unsplash API Key",
+                    subtitle = if (uiState.unsplashApiKey.isBlank() || uiState.unsplashApiKey == Constants.UNSPLASH_ACCESS_KEY) "Using default" else "Custom key set",
+                    onClick = { showUnsplashKeyDialog = true }
+                )
+            }
+
             // Appearance Section
             SettingsSectionHeader("APPEARANCE")
             SettingsGroup {
@@ -267,6 +286,26 @@ fun SettingsScreen(
             }
         )
     }
+
+    if (showPexelsKeyDialog) {
+        com.pexwall.app.ApiKeyDialog(
+            onDismiss = { showPexelsKeyDialog = false },
+            onSave = { key ->
+                viewModel.setApiKey(key)
+                showPexelsKeyDialog = false
+            }
+        )
+    }
+
+    if (showUnsplashKeyDialog) {
+        com.pexwall.app.ApiKeyDialog(
+            onDismiss = { showUnsplashKeyDialog = false },
+            onSave = { key ->
+                viewModel.setUnsplashApiKey(key)
+                showUnsplashKeyDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -346,6 +385,8 @@ fun SettingsClickableItem(
             Text(title, style = MaterialTheme.typography.bodyLarge, color = Color.White)
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Color.White)
         }
+
+
     }
 }
 

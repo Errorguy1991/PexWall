@@ -21,6 +21,7 @@ class PreferencesManager @Inject constructor(
     companion object {
         private val KEY_ORIENTATION = stringPreferencesKey("orientation")
         private val KEY_API_KEY = stringPreferencesKey("pexels_api_key")
+        private val KEY_UNSPLASH_API_KEY = stringPreferencesKey("unsplash_api_key")
         private val KEY_FREQUENCY_MINUTES = longPreferencesKey("frequency_minutes")
         private val KEY_WIFI_ONLY = booleanPreferencesKey("wifi_only")
         private val KEY_WALLPAPER_MODE = stringPreferencesKey("wallpaper_mode")
@@ -38,6 +39,9 @@ class PreferencesManager @Inject constructor(
 
     val apiKey: Flow<String> = context.dataStore.data.map { prefs ->
         prefs[KEY_API_KEY] ?: ""
+    }
+    val unsplashApiKey: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[KEY_UNSPLASH_API_KEY] ?: ""
     }
 
     val frequencyMinutes: Flow<Long> = context.dataStore.data.map { prefs ->
@@ -97,6 +101,7 @@ class PreferencesManager @Inject constructor(
     }
 
     suspend fun setWallpaperSource(source: WallpaperSource) { context.dataStore.edit { it[KEY_WALLPAPER_SOURCE] = source.name } }
+    suspend fun setUnsplashApiKey(key: String) { context.dataStore.edit { it[KEY_UNSPLASH_API_KEY] = key } }
     suspend fun setApiKey(key: String) { context.dataStore.edit { it[KEY_API_KEY] = key } }
     suspend fun setHasSeenApiKeyDialog(seen: Boolean) { context.dataStore.edit { it[KEY_HAS_SEEN_API_KEY_DIALOG] = seen } }
     suspend fun setFrequencyMinutes(minutes: Long) { context.dataStore.edit { it[KEY_FREQUENCY_MINUTES] = minutes } }

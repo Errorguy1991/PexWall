@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
             } catch (e: retrofit2.HttpException) {
                 e.printStackTrace()
                 if (e.code() == 401) {
-                    _uiState.update { it.copy(error = "HTTP 401 Unauthorized: Invalid Pexels API Key. Please update it in Settings.") }
+                    _uiState.update { it.copy(error = "HTTP 401 Unauthorized: Invalid API Key for selected source. Please update in Settings.") }
                 } else {
                     _uiState.update { it.copy(error = e.localizedMessage ?: "An error occurred") }
                 }

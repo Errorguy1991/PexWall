@@ -103,7 +103,6 @@ class WallpaperRepository @Inject constructor(
         }
 
         if (source == WallpaperSource.UNSPLASH) {
-            return try {
                 val unsplashCategoriesToUse = if (isRandom || selectedCategories.isEmpty()) {
                     listOf(Constants.UNSPLASH_CATEGORIES.random().id)
                 } else {
@@ -113,7 +112,7 @@ class WallpaperRepository @Inject constructor(
                 val response = unsplashApi.getRandomPhoto(
                     query = query,
                     orientation = if (orientation == "any") "squarish" else orientation,
-                    clientId = Constants.UNSPLASH_ACCESS_KEY
+                    clientId = com.pexwall.app.util.ApiKeyHolder.unsplashApiKey.ifEmpty { Constants.UNSPLASH_ACCESS_KEY }
                 )
                 
                 val fullUrl = response.urls.raw
@@ -138,11 +137,7 @@ class WallpaperRepository @Inject constructor(
                     ),
                     alt = "Unsplash Photo by " + response.user.name
                 )
-                photo
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
+                return photo
         }
 
         val categoriesToUse = if (isRandom || selectedCategories.isEmpty()) {

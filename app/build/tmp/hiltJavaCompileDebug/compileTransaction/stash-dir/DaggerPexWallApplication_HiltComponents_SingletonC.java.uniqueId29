@@ -14,6 +14,7 @@ import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
 import com.pexwall.app.data.api.BingApi;
 import com.pexwall.app.data.api.PexelsApi;
+import com.pexwall.app.data.api.UnsplashApi;
 import com.pexwall.app.data.db.AppDatabase;
 import com.pexwall.app.data.db.WallpaperDao;
 import com.pexwall.app.data.preferences.PreferencesManager;
@@ -24,6 +25,7 @@ import com.pexwall.app.di.AppModule_ProvideMoshiFactory;
 import com.pexwall.app.di.AppModule_ProvideOkHttpClientFactory;
 import com.pexwall.app.di.AppModule_ProvidePexelsApiFactory;
 import com.pexwall.app.di.AppModule_ProvideRetrofitFactory;
+import com.pexwall.app.di.AppModule_ProvideUnsplashApiFactory;
 import com.pexwall.app.di.AppModule_ProvideWallpaperDaoFactory;
 import com.pexwall.app.ui.categories.CategoriesViewModel;
 import com.pexwall.app.ui.categories.CategoriesViewModel_HiltModules_KeyModule_ProvideFactory;
@@ -589,6 +591,8 @@ public final class DaggerPexWallApplication_HiltComponents_SingletonC {
 
     private Provider<BingApi> provideBingApiProvider;
 
+    private Provider<UnsplashApi> provideUnsplashApiProvider;
+
     private Provider<PreferencesManager> preferencesManagerProvider;
 
     private Provider<AppDatabase> provideDatabaseProvider;
@@ -623,11 +627,12 @@ public final class DaggerPexWallApplication_HiltComponents_SingletonC {
       this.provideRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 3));
       this.providePexelsApiProvider = DoubleCheck.provider(new SwitchingProvider<PexelsApi>(singletonCImpl, 2));
       this.provideBingApiProvider = DoubleCheck.provider(new SwitchingProvider<BingApi>(singletonCImpl, 6));
-      this.preferencesManagerProvider = DoubleCheck.provider(new SwitchingProvider<PreferencesManager>(singletonCImpl, 7));
-      this.provideDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<AppDatabase>(singletonCImpl, 9));
-      this.provideWallpaperDaoProvider = DoubleCheck.provider(new SwitchingProvider<WallpaperDao>(singletonCImpl, 8));
+      this.provideUnsplashApiProvider = DoubleCheck.provider(new SwitchingProvider<UnsplashApi>(singletonCImpl, 7));
+      this.preferencesManagerProvider = DoubleCheck.provider(new SwitchingProvider<PreferencesManager>(singletonCImpl, 8));
+      this.provideDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<AppDatabase>(singletonCImpl, 10));
+      this.provideWallpaperDaoProvider = DoubleCheck.provider(new SwitchingProvider<WallpaperDao>(singletonCImpl, 9));
       this.wallpaperRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<WallpaperRepository>(singletonCImpl, 1));
-      this.wallpaperSetterProvider = DoubleCheck.provider(new SwitchingProvider<WallpaperSetter>(singletonCImpl, 10));
+      this.wallpaperSetterProvider = DoubleCheck.provider(new SwitchingProvider<WallpaperSetter>(singletonCImpl, 11));
       this.wallpaperWorker_AssistedFactoryProvider = SingleCheck.provider(new SwitchingProvider<WallpaperWorker_AssistedFactory>(singletonCImpl, 0));
     }
 
@@ -680,7 +685,7 @@ public final class DaggerPexWallApplication_HiltComponents_SingletonC {
           };
 
           case 1: // com.pexwall.app.data.repository.WallpaperRepository 
-          return (T) new WallpaperRepository(singletonCImpl.providePexelsApiProvider.get(), singletonCImpl.provideBingApiProvider.get(), singletonCImpl.preferencesManagerProvider.get(), singletonCImpl.provideWallpaperDaoProvider.get());
+          return (T) new WallpaperRepository(singletonCImpl.providePexelsApiProvider.get(), singletonCImpl.provideBingApiProvider.get(), singletonCImpl.provideUnsplashApiProvider.get(), singletonCImpl.preferencesManagerProvider.get(), singletonCImpl.provideWallpaperDaoProvider.get());
 
           case 2: // com.pexwall.app.data.api.PexelsApi 
           return (T) AppModule_ProvidePexelsApiFactory.providePexelsApi(singletonCImpl.provideRetrofitProvider.get());
@@ -697,16 +702,19 @@ public final class DaggerPexWallApplication_HiltComponents_SingletonC {
           case 6: // com.pexwall.app.data.api.BingApi 
           return (T) AppModule_ProvideBingApiFactory.provideBingApi(singletonCImpl.provideMoshiProvider.get());
 
-          case 7: // com.pexwall.app.data.preferences.PreferencesManager 
+          case 7: // com.pexwall.app.data.api.UnsplashApi 
+          return (T) AppModule_ProvideUnsplashApiFactory.provideUnsplashApi(singletonCImpl.provideMoshiProvider.get());
+
+          case 8: // com.pexwall.app.data.preferences.PreferencesManager 
           return (T) new PreferencesManager(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 8: // com.pexwall.app.data.db.WallpaperDao 
+          case 9: // com.pexwall.app.data.db.WallpaperDao 
           return (T) AppModule_ProvideWallpaperDaoFactory.provideWallpaperDao(singletonCImpl.provideDatabaseProvider.get());
 
-          case 9: // com.pexwall.app.data.db.AppDatabase 
+          case 10: // com.pexwall.app.data.db.AppDatabase 
           return (T) AppModule_ProvideDatabaseFactory.provideDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 10: // com.pexwall.app.util.WallpaperSetter 
+          case 11: // com.pexwall.app.util.WallpaperSetter 
           return (T) new WallpaperSetter(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           default: throw new AssertionError(id);
