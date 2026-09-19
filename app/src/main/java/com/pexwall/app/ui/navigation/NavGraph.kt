@@ -69,12 +69,13 @@ fun PexWallNavGraph(homeViewModel: HomeViewModel = hiltViewModel()) {
     
     val homeUiState by homeViewModel.uiState.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().haze(state = hazeState)) {
+        com.pexwall.app.ui.components.MeshGradientBackground()
         CompositionLocalProvider(LocalHazeState provides hazeState) {
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.route,
-                modifier = Modifier.fillMaxSize().haze(state = hazeState)
+                modifier = Modifier.fillMaxSize()
             ) {
                 composable(Screen.Home.route) { HomeScreen(viewModel = homeViewModel) }
                 composable(Screen.Categories.route) { CategoriesScreen() }

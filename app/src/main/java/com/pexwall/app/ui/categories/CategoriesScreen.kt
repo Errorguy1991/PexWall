@@ -82,9 +82,9 @@ fun CategoriesScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .clip(RoundedCornerShape(24.dp))
-                            .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(24.dp))
-                            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(12.dp))
+                            
                             .background(Color.White.copy(alpha=0.05f))
                     ) {
                         Row(
@@ -130,9 +130,9 @@ fun CategoriesScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 16.dp)
-                                    .clip(RoundedCornerShape(24.dp))
-                                    .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(24.dp))
-                            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .border(1.dp, Color.White.copy(alpha=0.1f), RoundedCornerShape(12.dp))
+                            
                             .background(Color.White.copy(alpha=0.05f))
                             ) {
                                 Column {

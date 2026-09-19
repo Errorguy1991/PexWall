@@ -141,9 +141,9 @@ fun HistoryItem(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-            .hazeChild(state = LocalHazeState.current, style = HazeStyle(blurRadius = 16.dp))
+            .clip(RoundedCornerShape(12.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
+            
             .background(Color.White.copy(alpha = 0.05f))
             .clickable { onApply() }
             .padding(12.dp)
